@@ -28,3 +28,6 @@ Thumbs.db
 *.db-wal
 *.db-shm
 coverage/
+
+# Archivos temporales de diagnóstico
+data/*.tmp

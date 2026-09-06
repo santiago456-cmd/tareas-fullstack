@@ -9,3 +9,5 @@ CI mantiene tests y lint de ambos proyectos, build frontend y prueba de instalac
 Comando: `pnpm run test:e2e` desde el frontend. Requisitos, puertos y comportamiento de limpieza: [guía E2E](../e2e/README.md).
 
 Estado remoto: repositorio indicado https://github.com/santiago456-cmd/tareas-fullstack.git, inicialmente vacío. Se prepara la rama codex/ops-02-e2e; la ejecución remota todavía debe verificarse. No se configuraron reglas de protección de ramas.
+
+Publicación: el push fue rechazado por falta de autenticación Git local (`could not read Username`). El remoto está configurado y la rama está comprometida; falta autenticar Git, publicar y verificar el resultado real de Actions. Verificación final local: 84 pruebas backend, 18 frontend, 2 E2E, lint en ambos proyectos y build frontend aprobados.
