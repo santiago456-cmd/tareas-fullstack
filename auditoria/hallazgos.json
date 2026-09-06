@@ -336,7 +336,7 @@
         "linea": 10
       }
     ],
-    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración y aplicación a base de desarrollo pendientes",
+    "estado": "implementado; CI aprobada, integrado localmente y aplicado a desarrollo; publicación de rama principal pendiente",
     "seguimiento": "ITERACION-06.md",
     "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500"
   },
@@ -371,7 +371,7 @@
         "linea": 5
       }
     ],
-    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración y aplicación a base de desarrollo pendientes",
+    "estado": "implementado; CI aprobada, integrado localmente y aplicado a desarrollo; publicación de rama principal pendiente",
     "seguimiento": "ITERACION-06.md",
     "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500"
   },
@@ -416,7 +416,7 @@
         "linea": 120
       }
     ],
-    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración y aplicación a base de desarrollo pendientes",
+    "estado": "implementado; CI aprobada, integrado localmente y aplicado a desarrollo; publicación de rama principal pendiente",
     "seguimiento": "ITERACION-06.md",
     "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500"
   },
@@ -473,7 +473,7 @@
         "linea": 4
       }
     ],
-    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración y aplicación a base de desarrollo pendientes",
+    "estado": "implementado; CI aprobada, integrado localmente y aplicado a desarrollo; publicación de rama principal pendiente",
     "seguimiento": "ITERACION-06.md",
     "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500"
   },

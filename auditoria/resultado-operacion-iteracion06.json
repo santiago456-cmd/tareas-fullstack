@@ -11,5 +11,17 @@
   "migrations": [
     "001-baseline",
     "002-collection-indexes"
-  ]
+  ],
+  "api": {
+    "port": 3000,
+    "initial_pid": 42692,
+    "health_check_status": 200,
+    "swagger_status": 200,
+    "database": "OK"
+  },
+  "integration": {
+    "branch": "codex/ops-02-e2e",
+    "method": "fast-forward",
+    "remote_publication": "pending"
+  }
 }
