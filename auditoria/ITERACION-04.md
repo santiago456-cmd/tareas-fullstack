@@ -11,3 +11,9 @@ Comando: `pnpm run test:e2e` desde el frontend. Requisitos, puertos y comportami
 Estado remoto: repositorio indicado https://github.com/santiago456-cmd/tareas-fullstack.git, inicialmente vacío. Se prepara la rama codex/ops-02-e2e; la ejecución remota todavía debe verificarse. No se configuraron reglas de protección de ramas.
 
 Publicación: el push fue rechazado por falta de autenticación Git local (`could not read Username`). El remoto está configurado y la rama está comprometida; falta autenticar Git, publicar y verificar el resultado real de Actions. Verificación final local: 84 pruebas backend, 18 frontend, 2 E2E, lint en ambos proyectos y build frontend aprobados.
+
+## Cierre: GitHub Actions verificado
+
+La ejecución [34000806558](https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34000806558) terminó en **success** sobre el commit `3e3b11e249978e91b59814f4d5f030444274d390` de `codex/ops-02-e2e`. Pasaron los tres jobs: backend (tests, lint e instalación de producción), frontend (tests, lint y build) y E2E con Keycloak real. El reporte Playwright fue publicado como artefacto.
+
+OPS-02 queda completado. Las menciones anteriores a autenticación o publicación pendiente son históricas. Las reglas de protección de ramas no se modificaron. Evidencia de la API de GitHub: `resultado-ci-ops02.json`.

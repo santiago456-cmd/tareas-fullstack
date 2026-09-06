@@ -15,3 +15,11 @@ La prueba negativa de tipos usa @ts-expect-error deliberadamente: falla si una r
 No se ejecutaron inicializaciones sobre la base del usuario. El seeder ahora detecta listas demo faltantes y produce un error explícito en lugar de intentar acceder a null.
 
 E2E local: ambos escenarios con Keycloak real aprobaron (1,4 minutos), incluyendo renovación y revocación de sesión; el entorno temporal se limpió.
+
+## Cierre de CI — 2026-09-06
+
+GitHub Actions aprobó el commit `e1aa52cdf32d33d0327278c6b50601bf718a5599` de `codex/backend-typescript`: [ejecución 34020467154](https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34020467154).
+
+Los tres jobs finalizaron correctamente: backend (typecheck estricto, pruebas, lint y smoke de producción), frontend (pruebas, lint y build) y E2E con Keycloak real. El segundo E2E local también aprobó ambos escenarios tras incorporar la compilación automática al runner, con limpieza del entorno temporal.
+
+Evidencia de estado, commit y pasos: `resultado-ci-typescript.json`. La rama está publicada; no se realizó una fusión a la rama principal.

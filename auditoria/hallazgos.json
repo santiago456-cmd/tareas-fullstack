@@ -893,8 +893,9 @@
         "linea": 1
       }
     ],
-    "estado": "suites, E2E real y CI implementados; E2E local aprobado; ejecución remota pendiente",
-    "seguimiento": "ITERACION-04.md"
+    "estado": "completado: suites locales y GitHub Actions aprobados, incluido E2E con Keycloak real",
+    "seguimiento": "ITERACION-04.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34000806558"
   },
   {
     "id": "OPS-03",
