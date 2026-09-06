@@ -1,0 +1,26 @@
+{
+  "id": 34049428500,
+  "head_branch": "codex/backend-reliability",
+  "head_sha": "d8c7024ef268cfbdd6548554f9a38eabdfaec5c6",
+  "status": "completed",
+  "conclusion": "success",
+  "html_url": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500",
+  "verified_at": "2026-09-06T17:47:49.060610+00:00",
+  "jobs": [
+    {
+      "name": "e2e",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "verificar (tareas-fe)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "verificar (tareas-back-main)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ]
+}

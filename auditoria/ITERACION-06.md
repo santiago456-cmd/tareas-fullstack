@@ -10,3 +10,7 @@ Alcance: BE-09, BE-10, BE-12 y BE-14 sobre el backend TypeScript, manteniendo SQ
 Validación local: 97 pruebas backend y 21 frontend aprobadas; TypeScript estricto, lint de ambos proyectos, build frontend y smoke de producción sin devDependencies aprobados. Las pruebas incluyen procesos reales, señales, puerto ocupado, solicitudes en curso, cierre forzado, adopción de una base creada por Sequelize, rollback de migraciones, restauración e aislamiento HTTP entre cuentas. Los dos E2E con Keycloak real aprobaron en 1,4 minutos (login/CRUD/SSO/logout y renovación/revocación); el contenedor y la red temporal fueron eliminados. Tras reforzar el rechazo de destinos con WAL/SHM, se repitieron tipos, lint, build y pruebas de migración/operación.
 
 No se modificó la base de datos de desarrollo. Para activar esta versión sobre una base existente: detener escritores, crear respaldo, ejecutar `pnpm run migrate-db` y reiniciar. Procedimiento completo en el README del backend. La rama de trabajo es `codex/backend-reliability`; integración y CI remota pendientes.
+
+## Cierre de CI
+
+GitHub Actions aprobó el commit `d8c7024ef268cfbdd6548554f9a38eabdfaec5c6` en `codex/backend-reliability`: [ejecución 34049428500](https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500). Backend, frontend y E2E terminaron correctamente. Evidencia: `resultado-ci-iteracion06.json`. Las menciones anteriores a CI pendiente son históricas; siguen pendientes la integración a la rama principal y la aplicación de migraciones a la base de desarrollo.

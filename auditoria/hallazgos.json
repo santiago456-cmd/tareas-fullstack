@@ -336,8 +336,9 @@
         "linea": 10
       }
     ],
-    "estado": "implementado y verificado localmente; CI remota y aplicación a base de desarrollo pendientes",
-    "seguimiento": "ITERACION-06.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración y aplicación a base de desarrollo pendientes",
+    "seguimiento": "ITERACION-06.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500"
   },
   {
     "id": "BE-10",
@@ -370,8 +371,9 @@
         "linea": 5
       }
     ],
-    "estado": "implementado y verificado localmente; CI remota y aplicación a base de desarrollo pendientes",
-    "seguimiento": "ITERACION-06.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración y aplicación a base de desarrollo pendientes",
+    "seguimiento": "ITERACION-06.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500"
   },
   {
     "id": "BE-11",
@@ -414,8 +416,9 @@
         "linea": 120
       }
     ],
-    "estado": "implementado y verificado localmente; CI remota y aplicación a base de desarrollo pendientes",
-    "seguimiento": "ITERACION-06.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración y aplicación a base de desarrollo pendientes",
+    "seguimiento": "ITERACION-06.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500"
   },
   {
     "id": "BE-13",
@@ -470,8 +473,9 @@
         "linea": 4
       }
     ],
-    "estado": "implementado y verificado localmente; CI remota y aplicación a base de desarrollo pendientes",
-    "seguimiento": "ITERACION-06.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración y aplicación a base de desarrollo pendientes",
+    "seguimiento": "ITERACION-06.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500"
   },
   {
     "id": "FE-01",

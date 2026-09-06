@@ -1,0 +1,15 @@
+{
+  "backup": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/data/backups/pre-iteracion06-2026-09-06T17-51-14.574Z.sqlite",
+  "database": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/data/db.sqlite",
+  "rows_unchanged": {
+    "CUENTAS": 2,
+    "LISTAS": 7,
+    "TAREAS": 6
+  },
+  "integrity_check": "ok",
+  "foreign_key_check": [],
+  "migrations": [
+    "001-baseline",
+    "002-collection-indexes"
+  ]
+}
