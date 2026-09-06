@@ -7,7 +7,7 @@ Permite crear, consultar, actualizar y eliminar **listas**, junto con las **tare
 
 ## Tecnologias
 
-- **Node.js** con **Express 5**
+- **Node.js 24**, **TypeScript estricto** y **Express 5**
 - **Sequelize** como ORM
 - **SQLite** como base de datos
 - **dotenv** para variables de entorno
@@ -22,10 +22,10 @@ Permite crear, consultar, actualizar y eliminar **listas**, junto con las **tare
 ```
 api-tareas/
 ├── src/
-│   ├── app.js                      Factoría de Express y rutas; arranque en server.js
+│   ├── app.ts                      Factoría de Express y rutas; arranque en server.js
 │   ├── config/
-│   │   ├── database.js             Instancia de Sequelize (SQLite)
-│   │   └── env.js                  Carga y exporta las variables de entorno
+│   │   ├── database.ts             Instancia de Sequelize (SQLite)
+│   │   └── env.ts                  Carga y exporta las variables de entorno
 │   ├── controllers/                Reciben la request HTTP y devuelven la response
 │   ├── services/                   Logica de negocio (validaciones, reglas)
 │   ├── repositories/
@@ -42,7 +42,7 @@ api-tareas/
 │   │   ├── apiRoutes.js            Agrupa y monta todas las rutas bajo /api
 │   │   ├── listasRoutes.js         Rutas del recurso Listas
 │   │   ├── tareasRoutes.js         Rutas del recurso Tareas
-│   │   └── healthCheckRoutes.js    Ruta de estado del servidor
+│   │   └── healthCheckRoutes.ts    Ruta de estado del servidor
 │   ├── scripts/
 │   │   ├── initDb.js               Inicializa la base de datos y ejecuta los seeders
 │   │   └── seeders/                Datos iniciales para listas y tareas
@@ -96,6 +96,7 @@ CORS_ORIGIN=   # Origen permitido por CORS (ej: http://localhost:5173)
 Si es la primera vez que levantás el proyecto, ejecutá el script de inicializacion antes de arrancar el servidor:
 
 ```bash
+npm run build
 npm run init-db
 ```
 
@@ -195,7 +196,7 @@ Para usarlas:
 
 ## Validación y pruebas (iteración 01)
 
-Entorno verificado: Node.js 24 y pnpm 11.13.0. `pnpm install --frozen-lockfile`, `pnpm test` y `pnpm run lint`. Los tests usan bases temporales y un servidor JWKS local; no requieren Keycloak ni modifican la base de desarrollo. `src/app.js` exporta la factoría para tests; `pnpm start` ejecuta `src/server.js`.
+Entorno verificado: Node.js 24 y pnpm 11.13.0. `pnpm install --frozen-lockfile`, `pnpm test` y `pnpm run lint`. Los tests usan bases temporales y un servidor JWKS local; no requieren Keycloak ni modifican la base de desarrollo. `src/app.ts` exporta la factoría para tests; `pnpm start` ejecuta `dist/server.js`.
 
 Las escrituras rechazan campos desconocidos, tipos incorrectos y PATCH vacío con 400. `nombre` admite 3–100 caracteres, `titulo` 3–150 (ambos recortan espacios); las descripciones admiten null o texto de hasta 250 caracteres en listas y 500 en tareas. `color` admite null o texto de 1–30 caracteres. `listaId` debe ser un número entero positivo seguro al crear una tarea; no se modifica mediante PATCH. La finalización usa su endpoint específico.
 
@@ -240,3 +241,26 @@ Keycloak está limitado a `127.0.0.1:8081`. Compose es exclusivamente de desarro
 `pnpm run init-db` termina con código 0 al completar o repetir una inicialización correcta, y código 1 si falla la inicialización o el cierre. No fuerza la salida antes de cerrar la conexión.
 
 `pnpm run test:production` copia fuentes y manifiestos a un directorio temporal, instala con `--prod --frozen-lockfile`, inicializa una base temporal y comprueba HTTP de health-check y Swagger. No toca `.env`, `node_modules` ni la base habitual del proyecto. Requiere acceso al registro de paquetes y permiso para abrir un puerto local. CI ejecuta esta comprobación además de tests y lint.
+
+
+## Backend TypeScript estricto (iteración 05)
+
+Todo `src/` está migrado a TypeScript. `tsconfig.json` activa `strict`, `noUncheckedIndexedAccess` y `noEmitOnError`, con módulos ESM/NodeNext y salida ES2022 en `dist/`. Las importaciones relativas mantienen extensión `.js` para que el artefacto compilado se ejecute en Node sin loaders. Las declaraciones de modelos usan `declare` para no sobrescribir los accessors de Sequelize.
+
+```bash
+pnpm install --frozen-lockfile
+pnpm run typecheck
+pnpm run build
+pnpm run init-db
+pnpm start
+```
+
+`pnpm dev` observa y ejecuta `src/server.ts` con tsx. `pnpm run dev:types` permite observar también los errores del compilador en otra terminal; tsx transpila para ejecutar, no sustituye el typecheck. La CI exige typecheck, lint y tests.
+
+`pnpm test` compila antes de ejecutar las regresiones JavaScript sobre `dist/`. Las pruebas de tipos en `tests/types/contracts.ts` se verifican mediante `typecheck` y no se ejecutan: comprueban que TypeScript rechaza entradas incompletas, etiquetas no textuales y contextos de autenticación sin comprobar. No se usan any explícitos ni supresiones globales del compilador en las fuentes.
+
+Los cuerpos HTTP son unknown hasta validarlos. Los DTO de escritura, resultados discriminados éxito/error y sobre de respuesta están definidos en `src/types/contracts.ts`. El contexto de identidad/cuenta es opcional en Express y debe comprobarse antes de acceder. La representación interna TEXT de etiquetas conserva una conversión de tipos localizada en el setter Sequelize; su contrato público sigue siendo string[] y tiene validación en runtime.
+
+Para producción: compilar con dependencias de desarrollo durante la construcción, distribuir `dist/` con manifiestos/lockfile e instalar `pnpm install --prod --frozen-lockfile` en el entorno de ejecución. `pnpm start`, `init-db`, `backup-db` y `normalizar-etiquetas` ejecutan archivos compilados y no requieren TypeScript ni tsx. Swagger resuelve controladores junto al módulo ejecutado, tanto en src como en dist. `test:production` comprueba este flujo en un directorio temporal.
+
+El E2E compila el backend antes de levantar su entorno aislado. SQLite, el esquema persistente y el formato JSON de la API se conservan. No se migró el frontend ni se implementó todavía PostgreSQL/BFF.

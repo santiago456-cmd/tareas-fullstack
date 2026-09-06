@@ -18,7 +18,7 @@ try {
   for (const name of ['package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml']) {
     await copyFile(new URL(name, root), join(directory, name));
   }
-  await cp(new URL('src', root), join(directory, 'src'), { recursive: true });
+  await cp(new URL('dist', root), join(directory, 'dist'), { recursive: true });
   await run('pnpm', ['install', '--prod', '--frozen-lockfile']);
   const env = {
     ...process.env,
@@ -27,7 +27,7 @@ try {
     KEYCLOAK_BASE_URL: 'http://localhost:8081',
     KEYCLOAK_REALM: 'proyecto-tareas',
   };
-  await run(process.execPath, ['src/scripts/initDb.js'], env);
+  await run('pnpm', ['run', 'init-db'], env);
   await run(
     process.execPath,
     [
@@ -35,8 +35,8 @@ try {
       '-e',
       `
     import assert from 'node:assert/strict';
-    import { createApp } from './src/app.js';
-    import { sequelize } from './src/config/database.js';
+    import { createApp } from './dist/app.js';
+    import { sequelize } from './dist/config/database.js';
     const server = createApp().listen(0, '127.0.0.1');
     await new Promise(resolve => server.once('listening', resolve));
     try {

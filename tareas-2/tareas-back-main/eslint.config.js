@@ -1,14 +1,12 @@
-// eslint.config.js
-// Configuración plana de ESLint.
-// Este archivo indica qué reglas de análisis estático queremos aplicar al proyecto.
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
-export default [
-  // Reglas recomendadas de JavaScript propuestas por ESLint.
+import tseslint from 'typescript-eslint';
+export default tseslint.config(
+  { ignores: ['dist/**', 'node_modules/**'] },
   js.configs.recommended,
-  // Configuración específica para nuestros archivos JavaScript.
+  ...tseslint.configs.recommended,
   {
-    files: ['src/**/*.js', 'tests/**/*.js', 'scripts/**/*.mjs'],
+    files: ['src/**/*.ts', 'tests/**/*.{js,ts}', 'scripts/**/*.mjs'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -21,12 +19,11 @@ export default [
       },
     },
     rules: {
-      // Reglas elegidas para este proyecto didáctico.
-      // Pueden ajustarse según los criterios de la cátedra.
-      'no-unused-vars': 'warn',
-      'no-console': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-namespace': ['error', { allowDeclarations: true }],
+      '@typescript-eslint/no-non-null-assertion': 'error',
     },
   },
-  // Desactiva reglas que podrían entrar en conflicto con Prettier.
-  prettier,
-];
+  prettier
+);

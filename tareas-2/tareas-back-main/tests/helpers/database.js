@@ -6,8 +6,8 @@ export async function testDatabase() {
   const directory = await mkdtemp(join(tmpdir(), 'tareas-test-'));
   process.env.SQLITE_STORAGE = join(directory, 'test.sqlite');
   process.env.NODE_ENV = 'test';
-  const { sequelize, prepararConexionSqlite } = await import('../../src/config/database.js');
-  await import('../../src/models/associations.js');
+  const { sequelize, prepararConexionSqlite } = await import('../../dist/config/database.js');
+  await import('../../dist/models/associations.js');
   await prepararConexionSqlite();
   return {
     sequelize,

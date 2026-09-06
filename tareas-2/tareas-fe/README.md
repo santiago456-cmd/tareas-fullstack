@@ -11,7 +11,7 @@ Generado a partir del instructivo **"Construcción del Frontend `tareas-fe`"**.
 ## Requisitos previos
 
 1. Node.js 24 (versión verificada en CI).
-2. El backend `api-tareas` corriendo en `http://localhost:3000` (`npm run init-db && npm start`).
+2. El backend `api-tareas` corriendo en `http://localhost:3000` (`npm run build && npm run init-db && npm start`).
 3. Keycloak configurado y corriendo (`npm run keycloak:up && npm run keycloak:setup` desde `api-tareas/`).
 
 ## Puesta en marcha

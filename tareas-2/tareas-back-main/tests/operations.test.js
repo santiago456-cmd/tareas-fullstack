@@ -11,7 +11,7 @@ test('init-db sale 0 en éxito/repetición y 1 cuando SQLite no puede abrir una 
   try {
     const storage = join(directory, 'database.sqlite');
     const run = () =>
-      spawnSync(process.execPath, ['src/scripts/initDb.js'], {
+      spawnSync(process.execPath, ['dist/scripts/initDb.js'], {
         cwd: project,
         env: { ...process.env, SQLITE_STORAGE: storage },
         encoding: 'utf8',

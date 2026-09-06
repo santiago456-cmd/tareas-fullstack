@@ -2,8 +2,8 @@
 if (!process.env.TAREAS_E2E || !process.env.SQLITE_STORAGE)
   throw new Error("Usar el runner E2E");
 const { prepararConexionSqlite, sequelize } =
-  await import("../tareas-2/tareas-back-main/src/config/database.js");
-const { createApp } = await import("../tareas-2/tareas-back-main/src/app.js");
+  await import("../tareas-2/tareas-back-main/dist/config/database.js");
+const { createApp } = await import("../tareas-2/tareas-back-main/dist/app.js");
 await prepararConexionSqlite();
 await sequelize.sync();
 const server = createApp().listen(13000, "127.0.0.1");

@@ -10,7 +10,7 @@ pnpm run test:e2e
 
 Instalar también las dependencias del backend con `pnpm install --frozen-lockfile` en `tareas-2/tareas-back-main`. Requiere Node 24, pnpm 11.13.0 y Docker Compose.
 
-El runner crea un proyecto Docker único, importa el realm ficticio `tareas-e2e`, inicia API y frontend sobre una base SQLite temporal y ejecuta Chromium. Usa únicamente loopback y los puertos 18081, 13000 y 15173; falla si alguno está ocupado. No reutiliza el Keycloak de desarrollo, su volumen, sus usuarios ni la base habitual. Las contraseñas de realm.json y compose.yml son fixtures públicas exclusivamente para este entorno efímero.
+El runner compila el backend TypeScript y crea un proyecto Docker único, importa el realm ficticio `tareas-e2e`, inicia API y frontend sobre una base SQLite temporal y ejecuta Chromium. Usa únicamente loopback y los puertos 18081, 13000 y 15173; falla si alguno está ocupado. No reutiliza el Keycloak de desarrollo, su volumen, sus usuarios ni la base habitual. Las contraseñas de realm.json y compose.yml son fixtures públicas exclusivamente para este entorno efímero.
 
 Al finalizar, incluso ante fallos, detiene sus procesos, elimina su proyecto Docker y limpia la base temporal. Ante una interrupción forzada del sistema, puede ser necesario eliminar el proyecto `tareas-e2e-<pid>` que se muestra al arrancar.
 

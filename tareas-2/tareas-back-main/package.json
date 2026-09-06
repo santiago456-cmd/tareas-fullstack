@@ -3,23 +3,26 @@
   "version": "1.0.0",
   "description": "Base profesional inicial para una API de tareas con Express",
   "type": "module",
-  "main": "src/server.js",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node --watch src/server.js",
-    "test": "node --test --test-concurrency=1 tests/*.test.js",
-    "test:coverage": "node --test --experimental-test-coverage --test-concurrency=1 tests/*.test.js",
-    "backup-db": "node src/scripts/backupDb.js",
-    "normalizar-etiquetas": "node src/scripts/normalizarEtiquetas.js",
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts",
+    "test": "pnpm run build && node --test --test-concurrency=1 tests/*.test.js",
+    "test:coverage": "pnpm run build && node --test --experimental-test-coverage --test-concurrency=1 tests/*.test.js",
+    "backup-db": "node dist/scripts/backupDb.js",
+    "normalizar-etiquetas": "node dist/scripts/normalizarEtiquetas.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
-    "init-db": "node src/scripts/initDb.js",
-    "init-db:force": "node src/scripts/initDb.js --force",
+    "init-db": "node dist/scripts/initDb.js",
+    "init-db:force": "node dist/scripts/initDb.js --force",
     "keycloak:up": "docker compose up -d",
     "keycloak:down": "docker compose down",
     "keycloak:setup": "bash scripts/setup-keycloak.sh",
-    "test:production": "node scripts/check-production.mjs"
+    "test:production": "pnpm run build && node scripts/check-production.mjs",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.type-tests.json",
+    "dev:types": "tsc -p tsconfig.json --watch"
   },
   "keywords": [
     "node",
@@ -42,8 +45,16 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.13.3",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "eslint": "^10.2.1",
     "eslint-config-prettier": "^10.1.8",
-    "prettier": "^3.8.3"
+    "prettier": "^3.8.3",
+    "tsx": "^4.23.13",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.69.0"
   }
 }

@@ -21,10 +21,10 @@ process.env.KEYCLOAK_BASE_URL = `http://127.0.0.1:${keyPort}`;
 process.env.KEYCLOAK_REALM = 'test';
 process.env.KEYCLOAK_CLIENT_ID = 'tareas-test';
 const issuer = `${process.env.KEYCLOAK_BASE_URL}/realms/test`;
-const { createApp } = await import('../src/app.js');
-const { Lista } = await import('../src/models/lista.js');
-const { Tarea } = await import('../src/models/tarea.js');
-const { Cuenta } = await import('../src/models/Cuenta.js');
+const { createApp } = await import('../dist/app.js');
+const { Lista } = await import('../dist/models/lista.js');
+const { Tarea } = await import('../dist/models/tarea.js');
+const { Cuenta } = await import('../dist/models/Cuenta.js');
 const { ForeignKeyConstraintError, ValidationError, UniqueConstraintError } =
   await import('sequelize');
 const api = http.createServer(createApp());
@@ -329,4 +329,12 @@ test('Health-check público: 200 disponible, 503 sin base y recuperación sin ca
   assert.equal(JSON.stringify(unavailable.body).includes('secreto'), false);
   spy.mock.restore();
   assert.equal((await request('/api/health-check', { bearer: null })).status, 200);
+});
+
+
+test('OpenAPI conserva rutas documentadas desde los controladores compilados', async () => {
+  const { swaggerSpec } = await import('../dist/docs/swagger.js');
+  assert.ok(swaggerSpec.paths['/api/listas']);
+  assert.ok(swaggerSpec.paths['/api/tareas']);
+  assert.ok(swaggerSpec.paths['/api/health-check']);
 });

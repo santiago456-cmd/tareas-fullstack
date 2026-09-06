@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validarLista, validarTarea, validarQuery } from '../src/validation/recursos.js';
+import { validarLista, validarTarea, validarQuery } from '../dist/validation/recursos.js';
 
 const invalid = (fn) =>
   assert.throws(fn, (error) => error.status === 400 && error.code === 'DATOS_INVALIDOS');

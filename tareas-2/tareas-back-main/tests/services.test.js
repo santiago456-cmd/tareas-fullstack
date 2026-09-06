@@ -4,17 +4,17 @@ import { join } from 'node:path';
 import { testDatabase } from './helpers/database.js';
 
 const db = await testDatabase();
-const { Cuenta } = await import('../src/models/Cuenta.js');
-const { Lista } = await import('../src/models/lista.js');
-const { Tarea } = await import('../src/models/tarea.js');
-const { CuentasService } = await import('../src/services/CuentasService.js');
-const { ListasService } = await import('../src/services/listasService.js');
-const { TareasService } = await import('../src/services/TareasService.js');
-const { ListasRepository } = await import('../src/repositories/listasRepository.js');
-const { withWriteTransaction } = await import('../src/config/transactions.js');
+const { Cuenta } = await import('../dist/models/Cuenta.js');
+const { Lista } = await import('../dist/models/lista.js');
+const { Tarea } = await import('../dist/models/tarea.js');
+const { CuentasService } = await import('../dist/services/CuentasService.js');
+const { ListasService } = await import('../dist/services/listasService.js');
+const { TareasService } = await import('../dist/services/TareasService.js');
+const { ListasRepository } = await import('../dist/repositories/listasRepository.js');
+const { withWriteTransaction } = await import('../dist/config/transactions.js');
 const { normalizarEtiquetasGuardadas } =
-  await import('../src/services/normalizarEtiquetasService.js');
-const { crearRespaldo } = await import('../src/services/backupService.js');
+  await import('../dist/services/normalizarEtiquetasService.js');
+const { crearRespaldo } = await import('../dist/services/backupService.js');
 const { Sequelize, UniqueConstraintError } = await import('sequelize');
 const cuentas = new CuentasService();
 const listas = new ListasService();

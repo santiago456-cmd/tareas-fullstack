@@ -59,6 +59,7 @@ try {
     });
     await new Promise((resolve) => probe.close(resolve));
   }
+  await start("pnpm", ["--dir", "tareas-2/tareas-back-main", "run", "build"]).completion;
   await start("docker", [...compose, "up", "-d"]).completion;
   await ready(
     "http://127.0.0.1:18081/realms/tareas-e2e/.well-known/openid-configuration",
