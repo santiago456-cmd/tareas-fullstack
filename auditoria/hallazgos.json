@@ -335,7 +335,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/repositories/tareasRepository.js",
         "linea": 10
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; CI remota y aplicación a base de desarrollo pendientes",
+    "seguimiento": "ITERACION-06.md"
   },
   {
     "id": "BE-10",
@@ -367,7 +369,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/repositories/tareas.repository.js",
         "linea": 5
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; CI remota y aplicación a base de desarrollo pendientes",
+    "seguimiento": "ITERACION-06.md"
   },
   {
     "id": "BE-11",
@@ -409,7 +413,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/README.md",
         "linea": 120
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; CI remota y aplicación a base de desarrollo pendientes",
+    "seguimiento": "ITERACION-06.md"
   },
   {
     "id": "BE-13",
@@ -463,7 +469,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/middlewares/tokenExtractor.js",
         "linea": 4
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; CI remota y aplicación a base de desarrollo pendientes",
+    "seguimiento": "ITERACION-06.md"
   },
   {
     "id": "FE-01",

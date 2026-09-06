@@ -22,6 +22,7 @@ process.env.KEYCLOAK_REALM = 'test';
 process.env.KEYCLOAK_CLIENT_ID = 'tareas-test';
 const issuer = `${process.env.KEYCLOAK_BASE_URL}/realms/test`;
 const { createApp } = await import('../dist/app.js');
+const { ListasRepository } = await import('../dist/repositories/listasRepository.js');
 const { Lista } = await import('../dist/models/lista.js');
 const { Tarea } = await import('../dist/models/tarea.js');
 const { Cuenta } = await import('../dist/models/Cuenta.js');
@@ -264,7 +265,7 @@ test('Primer ingreso paralelo y POST duplicado no producen 500', async () => {
 
 test('500 inesperado no revela SQL/tokens y queda correlacionado en logs', async () => {
   await createList();
-  mock.method(Lista, 'findAll', async () => {
+  mock.method(ListasRepository.prototype, 'paginaConConteos', async () => {
     throw new Error('SELECT secret_token FROM private_table');
   });
   const result = await request('/api/listas');
@@ -283,7 +284,7 @@ test('Errores ORM tienen respuestas de validación/conflicto; no son 500', async
     [new UniqueConstraintError({ message: 'privado' }), 409, 'RECURSO_DUPLICADO'],
     [new ForeignKeyConstraintError({ message: 'privado' }), 409, 'CONFLICTO_REFERENCIA'],
   ]) {
-    const spy = mock.method(Lista, 'findAll', async () => {
+    const spy = mock.method(ListasRepository.prototype, 'paginaConConteos', async () => {
       throw cause;
     });
     error(await request('/api/listas'), status, code);
@@ -331,10 +332,69 @@ test('Health-check público: 200 disponible, 503 sin base y recuperación sin ca
   assert.equal((await request('/api/health-check', { bearer: null })).status, 200);
 });
 
-
 test('OpenAPI conserva rutas documentadas desde los controladores compilados', async () => {
   const { swaggerSpec } = await import('../dist/docs/swagger.js');
   assert.ok(swaggerSpec.paths['/api/listas']);
   assert.ok(swaggerSpec.paths['/api/tareas']);
   assert.ok(swaggerSpec.paths['/api/health-check']);
+});
+
+test('Colecciones: límite por defecto, páginas estables, filtros y totales aislados', async () => {
+  const lista = await createList();
+  const cuenta = await Cuenta.findOne({ where: { keycloakSub: 'alice' } });
+  await Tarea.bulkCreate(
+    Array.from({ length: 105 }, (_, i) => ({
+      titulo: `Tarea ${i}`,
+      listaId: lista.id,
+      completada: i < 4,
+      fechaCreacion: new Date('2026-01-01'),
+    }))
+  );
+  const other = await Cuenta.create({ keycloakSub: 'other', username: 'other' });
+  const foreignList = await Lista.create({ nombre: 'Ajena', cuentaId: other.id });
+  await Tarea.create({ titulo: 'Ajena', listaId: foreignList.id });
+  const first = await request('/api/tareas');
+  assert.equal(first.body.data.length, 50);
+  assert.deepEqual(first.body.meta, {
+    page: 1,
+    limit: 50,
+    total: 105,
+    totalPages: 3,
+    hasNextPage: true,
+  });
+  const second = await request('/api/tareas?page=2');
+  assert.equal(second.body.data.length, 50);
+  assert.ok(first.body.data.at(-1).id < second.body.data[0].id);
+  const last = await request(`/api/listas/${lista.id}/tareas?page=3`);
+  assert.equal(last.body.data.tareas.length, 5);
+  assert.equal(last.body.meta.total, 105);
+  assert.equal(last.body.meta.hasNextPage, false);
+  const empty = await request('/api/tareas?page=4');
+  assert.deepEqual(empty.body.data, []);
+  assert.equal(empty.body.meta.total, 105);
+  assert.equal((await request('/api/tareas?completada=true&limit=2')).body.meta.total, 4);
+  const lists = await request('/api/listas?incluirVacias=false&limit=1');
+  assert.equal(lists.body.meta.total, 1);
+  assert.equal(lists.body.data[0].cantidadTareas, 105);
+  assert.equal((await request(`/api/listas/${foreignList.id}/tareas`)).status, 404);
+  assert.ok(cuenta);
+});
+
+test('Paginación rechaza límites excesivos, coerciones, negativos y valores repetidos', async () => {
+  const lista = await createList();
+  for (const path of ['/api/listas', '/api/tareas', `/api/listas/${lista.id}/tareas`]) {
+    for (const query of [
+      'limit=101',
+      'limit=0',
+      'page=-1',
+      'page=1.5',
+      'page=1e2',
+      'limit=2&limit=3',
+      'page=1000001',
+      'page=01',
+      'limit=',
+    ]) {
+      assert.equal((await request(`${path}?${query}`)).status, 400, `${path}?${query}`);
+    }
+  }
 });

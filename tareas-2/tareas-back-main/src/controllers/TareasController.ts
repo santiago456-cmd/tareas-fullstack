@@ -1,3 +1,4 @@
+import { paginacion } from '../validation/paginacion.js';
 import type { NextFunction } from 'express';
 import { TareasService } from '../services/TareasService.js';
 import {
@@ -28,10 +29,24 @@ export class TareasController {
    * /api/tareas:
    *   get:
    *     summary: Obtener todas las tareas
-   *     description: Devuelve todas las tareas. Permite filtrar por estado de completado y prioridad.
+   *     description: Devuelve una página de tareas filtradas por estado y prioridad. meta contiene page, limit, total, totalPages y hasNextPage.
    *     tags:
    *       - Tareas
    *     parameters:
+   *       - in: query
+   *         name: page
+   *         schema:
+   *           type: integer
+   *           minimum: 1
+   *           maximum: 1000000
+   *           default: 1
+   *       - in: query
+   *         name: limit
+   *         schema:
+   *           type: integer
+   *           minimum: 1
+   *           maximum: 100
+   *           default: 50
    *       - in: query
    *         name: completada
    *         schema:
@@ -55,9 +70,18 @@ export class TareasController {
    */
   static async obtenerTareas(req: ApiRequest, res: ApiRes, next: NextFunction) {
     try {
-      const { completada, prioridad } = validarQuery(req.query, ['completada', 'prioridad']);
+      const { completada, prioridad } = validarQuery(req.query, [
+        'completada',
+        'prioridad',
+        'page',
+        'limit',
+      ]);
       const cuentaId = obtenerCuentaId(req);
-      const resultado = await tareasService.obtenerTareas(cuentaId, { completada, prioridad });
+      const resultado = await tareasService.obtenerTareas(cuentaId, {
+        completada,
+        prioridad,
+        pagination: paginacion(req.query),
+      });
       if (!resultado.ok) {
         return res.status(resultado.status).json(
           errorResponse({
@@ -71,9 +95,7 @@ export class TareasController {
         successResponse({
           message: 'Tareas obtenidas correctamente',
           data: resultado.data,
-          meta: {
-            total: resultado.data.length,
-          },
+          meta: resultado.meta,
         })
       );
     } catch (error) {

@@ -1,4 +1,5 @@
 import type { Attributes, Order, Transactionable, WhereOptions } from 'sequelize';
+import { paginacion, type Paginacion } from '../validation/paginacion.js';
 import { Lista } from '../models/lista.js';
 import { Tarea } from '../models/tarea.js';
 import { BaseRepository } from './baseRepository.js';
@@ -26,25 +27,20 @@ export class TareasRepository extends BaseRepository<Tarea> {
     });
   }
 
-  async obtenerPorListaId(listaId: number) {
-    return this.findAll({
-      where: {
-        listaId,
-      },
-      order: [['fechaCreacion', 'ASC']],
-    });
-  }
-
   async findAllPorCuentaId({
     cuentaId,
     where = {},
     order,
+    pagination = paginacion(),
   }: {
     cuentaId: number;
     where?: WhereOptions<Attributes<Tarea>>;
     order?: Order;
+    pagination?: Paginacion;
   }) {
-    return this.findAll({
+    return Tarea.findAndCountAll({
+      limit: pagination.limit,
+      offset: pagination.offset,
       where,
       order,
       include: [{ model: Lista, as: 'lista', where: { cuentaId } }],
@@ -59,11 +55,16 @@ export class TareasRepository extends BaseRepository<Tarea> {
     });
   }
 
-  async obtenerPorListaIdYCuentaId(listaId: number, cuentaId: number) {
-    return this.findAll({
+  async obtenerPorListaIdYCuentaId(listaId: number, cuentaId: number, pagination = paginacion()) {
+    return Tarea.findAndCountAll({
+      limit: pagination.limit,
+      offset: pagination.offset,
       where: { listaId },
       include: [{ model: Lista, as: 'lista', where: { cuentaId } }],
-      order: [['fechaCreacion', 'ASC']],
+      order: [
+        ['fechaCreacion', 'ASC'],
+        ['id', 'ASC'],
+      ],
     });
   }
 

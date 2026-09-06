@@ -1,3 +1,4 @@
+import { paginacion, pageMeta, type Paginacion } from '../validation/paginacion.js';
 import type { Attributes, WhereOptions } from 'sequelize';
 import { withWriteTransaction } from '../config/transactions.js';
 import type { Tarea } from '../models/tarea.js';
@@ -21,7 +22,11 @@ export class TareasService {
 
   async obtenerTareas(
     cuentaId: number,
-    { completada, prioridad }: { completada?: string; prioridad?: string } = {}
+    {
+      completada,
+      prioridad,
+      pagination = paginacion(),
+    }: { completada?: string; prioridad?: string; pagination?: Paginacion } = {}
   ): Promise<ServiceResult<Tarea[]>> {
     const where: WhereOptions<Attributes<Tarea>> = {};
 
@@ -52,13 +57,17 @@ export class TareasService {
       where.prioridad = prioridad;
     }
 
-    const tareas = await this.tareasRepository.findAllPorCuentaId({
+    const { rows: tareas, count } = await this.tareasRepository.findAllPorCuentaId({
+      pagination,
       cuentaId,
       where,
-      order: [['fechaCreacion', 'ASC']],
+      order: [
+        ['fechaCreacion', 'ASC'],
+        ['id', 'ASC'],
+      ],
     });
 
-    return { ok: true, status: 200, data: tareas };
+    return { ok: true, status: 200, data: tareas, meta: pageMeta(count, pagination) };
   }
 
   async obtenerTareaPorId(cuentaId: number, id: number) {

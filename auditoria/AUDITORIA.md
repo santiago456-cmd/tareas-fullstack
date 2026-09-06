@@ -1,3 +1,5 @@
+Seguimiento BE-09, BE-10, BE-12 y BE-14: [Iteración 06](ITERACION-06.md).
+
 > Migración del backend a TypeScript: [Iteración 05](ITERACION-05.md).
 
 > Seguimiento de OPS-02: [Iteración 04](ITERACION-04.md).

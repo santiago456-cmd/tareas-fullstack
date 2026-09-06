@@ -264,3 +264,45 @@ Los cuerpos HTTP son unknown hasta validarlos. Los DTO de escritura, resultados 
 Para producción: compilar con dependencias de desarrollo durante la construcción, distribuir `dist/` con manifiestos/lockfile e instalar `pnpm install --prod --frozen-lockfile` en el entorno de ejecución. `pnpm start`, `init-db`, `backup-db` y `normalizar-etiquetas` ejecutan archivos compilados y no requieren TypeScript ni tsx. Swagger resuelve controladores junto al módulo ejecutado, tanto en src como en dist. `test:production` comprueba este flujo en un directorio temporal.
 
 El E2E compila el backend antes de levantar su entorno aislado. SQLite, el esquema persistente y el formato JSON de la API se conservan. No se migró el frontend ni se implementó todavía PostgreSQL/BFF.
+
+## Colecciones paginadas (BE-09 / BE-10)
+
+`GET /api/listas`, `GET /api/tareas` y `GET /api/listas/:id/tareas` aceptan `page` (1 por defecto, máximo 1.000.000) y `limit` (50 por defecto, máximo 100). Solo aceptan enteros positivos escritos en decimal, sin ceros iniciales, sin valores repetidos. Un valor inválido devuelve 400. Una página posterior al final devuelve una colección vacía con el total real.
+
+El sobre conserva `data`; `meta` añade `page`, `limit`, `total`, `totalPages`, `hasNextPage`. El detalle de lista conserva `data.tareas` y el alias `meta.totalTareas`. Los totales solo incluyen recursos de la cuenta autenticada y respetan los filtros. Las listas se ordenan por nombre e ID, las tareas por fecha de creación e ID. Como en cualquier paginación por offset, escrituras concurrentes pueden desplazar elementos entre peticiones; no se ofrece una instantánea de toda la navegación.
+
+El listado de listas ejecuta dos sentencias SQL independientemente de su tamaño: total filtrado y página con conteos indexados. `incluirVacias=false` se aplica antes de paginar. Los índices `IX_tareas_lista_fecha_id` y `IX_tareas_lista_completada` cubren relación/orden y relación/estado; se conserva la unicidad `UK_listas_cuenta_nombre`.
+
+Las vistas actuales de React consumen sucesivas páginas de hasta 100 elementos para conservar los filtros y métricas locales sin truncar datos. Esto limita cada respuesta del API, pero aún carga la colección completa en el navegador. La navegación visual por páginas y las métricas calculadas en el servidor quedan para la iteración del frontend.
+
+## Migraciones y actualización de una base existente (BE-12)
+
+El esquema se administra con migraciones SQL versionadas e inmutables en `src/migrations/definitions.ts`, registradas con checksum en `SCHEMA_MIGRATIONS`. No se usa `sync` para inicializar ni actualizar bases operativas. `init-db` aplica migraciones y luego datos demo; `init-db:force` sigue siendo destructivo y se reserva para bases descartables.
+
+Para actualizar una base existente, desde el directorio del backend:
+
+1. Detener la API y cualquier otro escritor de esa base.
+2. Ejecutar `pnpm run build` (en el entorno de construcción).
+3. Ejecutar `pnpm run backup-db /ruta/absoluta/respaldo-antes-de-migrar.sqlite` con un destino nuevo.
+4. Ejecutar `pnpm run migrate-db` usando el mismo `SQLITE_STORAGE` que la API.
+5. Ejecutar `pnpm start` y comprobar `/api/health-check` y las lecturas autenticadas.
+
+La primera versión admite una base vacía o el esquema completo anterior compatible. Valida columnas, claves foráneas, unicidad de identidad e integridad; una base parcial o incompatible se rechaza. La segunda versión instala los índices. DDL y registro se aplican en una transacción SQLite IMMEDIATE, por lo que un fallo revierte la ejecución completa. Repetir el comando no reaplica versiones. Un historial alterado, desconocido o incompleto se rechaza. Los cambios futuros se agregan como versiones nuevas; no se edita una versión aplicada.
+
+No hay un `down` destructivo automático: la recuperación se realiza desde una instantánea verificada. Estas migraciones siguen siendo de SQLite; el traslado a PostgreSQL requiere su propia iteración.
+
+### Restauración comprobada
+
+```bash
+pnpm run restore-db /ruta/absoluta/respaldo.sqlite /ruta/absoluta/restaurada.sqlite
+```
+
+El comando no sobrescribe archivos. Copia el respaldo a un temporal en el directorio de destino, comprueba `integrity_check` y `foreign_key_check`, exige el esquema de tareas, aplica las migraciones compatibles sobre la copia y publica el archivo de forma atómica. Si falla, elimina los temporales y no publica una base incompleta. Rechaza un origen con archivos WAL/SHM: use una instantánea generada por `backup-db`, no una copia manual de la base activa.
+
+Para recuperar el servicio: detener todos los escritores, conservar la base anterior, cambiar `SQLITE_STORAGE` en la configuración al archivo restaurado, iniciar la API y verificar health-check y recursos autenticados. Para volver atrás, detener el servicio y apuntar a la base anterior con una versión de la aplicación compatible. La restauración no modifica las credenciales ni los usuarios de Keycloak.
+
+## Arranque y cierre (BE-14)
+
+Importar `app` o `server` no abre puertos ni crea archivos SQLite. La entrada valida puerto y configuración de Keycloak, prepara SQLite y exige todas las migraciones antes de escuchar. Un fallo de conexión, esquema o puerto cierra la base y termina con código 1. Las migraciones se ejecutan como paso operativo explícito, no al arrancar cada instancia.
+
+SIGTERM/SIGINT dejan de admitir conexiones y esperan las solicitudes en curso antes de cerrar Sequelize. El cierre es idempotente y tiene un plazo total de 10 segundos; si se supera, fuerza las conexiones HTTP y termina con código 1. `src/lifecycle.ts` permite probar el ciclo sin ejecutar la entrada CLI.

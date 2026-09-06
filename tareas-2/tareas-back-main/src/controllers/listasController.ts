@@ -1,3 +1,4 @@
+import { paginacion } from '../validation/paginacion.js';
 import type { NextFunction } from 'express';
 import { ListasService } from '../services/listasService.js';
 import {
@@ -28,10 +29,24 @@ export class ListasController {
    * /api/listas:
    *   get:
    *     summary: Obtener todas las listas
-   *     description: Devuelve todas las listas con la cantidad de tareas asociadas. Permite filtrar listas vacías.
+   *     description: Devuelve una página de listas con conteos. meta contiene page, limit, total, totalPages y hasNextPage. El filtro de listas vacías se aplica antes de paginar.
    *     tags:
    *       - Listas
    *     parameters:
+   *       - in: query
+   *         name: page
+   *         schema:
+   *           type: integer
+   *           minimum: 1
+   *           maximum: 1000000
+   *           default: 1
+   *       - in: query
+   *         name: limit
+   *         schema:
+   *           type: integer
+   *           minimum: 1
+   *           maximum: 100
+   *           default: 50
    *       - in: query
    *         name: incluirVacias
    *         schema:
@@ -46,18 +61,19 @@ export class ListasController {
    */
   static async obtenerListas(req: ApiRequest, res: ApiRes, next: NextFunction) {
     try {
-      validarQuery(req.query, ['incluirVacias']);
+      validarQuery(req.query, ['incluirVacias', 'page', 'limit']);
       const incluirVacias = req.query.incluirVacias !== 'false';
       const cuentaId = obtenerCuentaId(req);
       const listas = await listasService.obtenerListasConCantidadDeTareas(cuentaId, {
         incluirVacias,
+        pagination: paginacion(req.query),
       });
       return res.status(200).json(
         successResponse({
           message: 'Listas obtenidas correctamente',
-          data: listas,
+          data: listas.data,
           meta: {
-            total: listas.length,
+            ...listas.meta,
             incluirVacias,
           },
         })
@@ -130,10 +146,24 @@ export class ListasController {
    * /api/listas/{id}/tareas:
    *   get:
    *     summary: Obtener tareas de una lista
-   *     description: Devuelve una lista junto con todas sus tareas asociadas
+   *     description: Devuelve la lista con una página de tareas. meta incluye page, limit, total, totalTareas, totalPages y hasNextPage.
    *     tags:
    *       - Listas
    *     parameters:
+   *       - in: query
+   *         name: page
+   *         schema:
+   *           type: integer
+   *           minimum: 1
+   *           maximum: 1000000
+   *           default: 1
+   *       - in: query
+   *         name: limit
+   *         schema:
+   *           type: integer
+   *           minimum: 1
+   *           maximum: 100
+   *           default: 50
    *       - in: path
    *         name: id
    *         required: true
@@ -163,7 +193,12 @@ export class ListasController {
           })
         );
       }
-      const listaConTareas = await listasService.obtenerListaConTareas(cuentaId, id);
+      validarQuery(req.query, ['page', 'limit']);
+      const listaConTareas = await listasService.obtenerListaConTareas(
+        cuentaId,
+        id,
+        paginacion(req.query)
+      );
       if (!listaConTareas) {
         return res.status(404).json(
           errorResponse({
@@ -176,9 +211,10 @@ export class ListasController {
       return res.status(200).json(
         successResponse({
           message: 'Tareas de la lista obtenidas correctamente',
-          data: listaConTareas,
+          data: listaConTareas.data,
           meta: {
-            totalTareas: listaConTareas.tareas.length,
+            ...listaConTareas.meta,
+            totalTareas: listaConTareas.meta.total,
           },
         })
       );

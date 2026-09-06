@@ -212,3 +212,41 @@ test('Ni modelos ni servicios guardan etiquetas no textuales', async () => {
   await assert.rejects(Tarea.create({ titulo: 'Inválida', listaId: lista.id, etiquetas: 'texto' }));
   assert.equal(await Tarea.count(), 1);
 });
+
+test('Conteos de listas usan dos consultas independientemente del número de listas', async () => {
+  const { a, b } = await fixture();
+  await Lista.bulkCreate(
+    Array.from({ length: 80 }, (_, i) => ({
+      nombre: `Lista ${String(i).padStart(3, '0')}`,
+      cuentaId: a.id,
+    }))
+  );
+  await Lista.create({ nombre: 'Ajena', cuentaId: b.id });
+  const queries = [];
+  const previous = db.sequelize.options.logging;
+  db.sequelize.options.logging = (sql) => queries.push(sql);
+  try {
+    const page = await listas.obtenerListasConCantidadDeTareas(a.id);
+    assert.equal(page.data.length, 50);
+    assert.equal(page.meta.total, 81);
+    assert.equal(queries.length, 2);
+    queries.length = 0;
+    const nonempty = await listas.obtenerListasConCantidadDeTareas(a.id, { incluirVacias: false });
+    assert.equal(nonempty.meta.total, 1);
+    assert.equal(nonempty.data[0].cantidadTareas, 1);
+    assert.equal(queries.length, 2);
+  } finally {
+    db.sequelize.options.logging = previous;
+  }
+});
+
+test('Migración adopta una base generada por los modelos anteriores conservando relaciones', async () => {
+  const { migrar } = await import('../dist/migrations/runner.js');
+  const { a, lista, tarea } = await fixture();
+  await db.sequelize.query('DROP INDEX IX_tareas_lista_fecha_id');
+  await db.sequelize.query('DROP INDEX IX_tareas_lista_completada');
+  assert.equal((await migrar(db.sequelize)).length, 2);
+  assert.equal((await Tarea.findByPk(tarea.id)).listaId, lista.id);
+  assert.equal((await Lista.findByPk(lista.id)).cuentaId, a.id);
+  assert.deepEqual(await migrar(db.sequelize), []);
+});

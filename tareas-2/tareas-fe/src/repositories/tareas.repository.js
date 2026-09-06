@@ -1,10 +1,11 @@
 // src/repositories/tareas.repository.js
 import api from './axios.config'
+import { obtenerColeccion } from './paginacion'
 
 // GET /api/tareas
 const obtenerTareas = async () => {
-  const res = await api.get('/tareas')
-  return res.data.data
+  const { items } = await obtenerColeccion(async page => (await api.get('/tareas', { params: { page, limit: 100 } })).data)
+  return items
 }
 
 // GET /api/tareas/:id

@@ -6,7 +6,8 @@ import { HttpError } from '../utils/HttpError.js';
 
 const issuer = `${env.keycloak.baseUrl}/realms/${env.keycloak.realm}`;
 const jwksUri = `${issuer}/protocol/openid-connect/certs`;
-const JWKS = createRemoteJWKSet(new URL(jwksUri));
+let jwks: ReturnType<typeof createRemoteJWKSet> | undefined;
+const getJwks = () => (jwks ??= createRemoteJWKSet(new URL(jwksUri)));
 
 function normalizarRoles(payload: JWTPayload) {
   const access = payload.realm_access;
@@ -26,7 +27,7 @@ export default async function tokenExtractor(req: Request, res: Response, next: 
 
     const token = authorization.substring('bearer '.length).trim();
 
-    const { payload } = await jwtVerify(token, JWKS, {
+    const { payload } = await jwtVerify(token, getJwks(), {
       issuer,
       audience: env.keycloak.audience,
     });

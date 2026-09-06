@@ -5,7 +5,8 @@ const { prepararConexionSqlite, sequelize } =
   await import("../tareas-2/tareas-back-main/dist/config/database.js");
 const { createApp } = await import("../tareas-2/tareas-back-main/dist/app.js");
 await prepararConexionSqlite();
-await sequelize.sync();
+const { migrar } = await import("../tareas-2/tareas-back-main/dist/migrations/runner.js");
+await migrar(sequelize);
 const server = createApp().listen(13000, "127.0.0.1");
 async function stop() {
   server.closeAllConnections();

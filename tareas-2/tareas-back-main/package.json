@@ -22,7 +22,9 @@
     "test:production": "pnpm run build && node scripts/check-production.mjs",
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.type-tests.json",
-    "dev:types": "tsc -p tsconfig.json --watch"
+    "dev:types": "tsc -p tsconfig.json --watch",
+    "migrate-db": "node dist/scripts/migrateDb.js",
+    "restore-db": "node dist/scripts/restoreDb.js"
   },
   "keywords": [
     "node",

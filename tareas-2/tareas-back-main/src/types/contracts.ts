@@ -26,7 +26,9 @@ export interface Failure {
   message: string;
   details?: unknown;
 }
-export type ServiceResult<T> = { ok: true; status: number; data: T } | Failure;
+export type ServiceResult<T> =
+  | { ok: true; status: number; data: T; meta?: import('../validation/paginacion.js').PageMeta }
+  | Failure;
 export interface ApiSuccess<T> {
   success: true;
   message: string;

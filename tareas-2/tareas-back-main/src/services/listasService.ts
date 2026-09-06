@@ -1,10 +1,12 @@
+import type { ListaView, TareaView } from '../types/contracts.js';
+import { paginacion, pageMeta, type PageMeta } from '../validation/paginacion.js';
 import type { Transaction } from 'sequelize';
 import { UniqueConstraintError } from 'sequelize';
 import { withWriteTransaction } from '../config/transactions.js';
 import type { Lista } from '../models/lista.js';
 import { ListasRepository } from '../repositories/listasRepository.js';
 import { TareasRepository } from '../repositories/tareasRepository.js';
-import type { Failure, ListaView, ServiceResult, TareaView } from '../types/contracts.js';
+import type { Failure, ServiceResult } from '../types/contracts.js';
 import { HttpError } from '../utils/HttpError.js';
 import { validarLista } from '../validation/recursos.js';
 
@@ -21,25 +23,9 @@ export class ListasService {
 
   async obtenerListasConCantidadDeTareas(
     cuentaId: number,
-    { incluirVacias = true } = {}
-  ): Promise<Array<ListaView & { cantidadTareas: number }>> {
-    const listas = await this.listasRepository.obtenerTodasOrdenadasPorNombrePorCuentaId(cuentaId);
-    const resultado = [];
-    for (const lista of listas) {
-      const cantidadTareas = await this.tareasRepository.contarPorListaId(lista.id);
-      if (!incluirVacias && cantidadTareas === 0) {
-        continue;
-      }
-      resultado.push({
-        id: lista.id,
-        nombre: lista.nombre,
-        descripcion: lista.descripcion,
-        color: lista.color,
-        fechaCreacion: lista.fechaCreacion,
-        cantidadTareas,
-      });
-    }
-    return resultado;
+    { incluirVacias = true, pagination = paginacion() } = {}
+  ) {
+    return this.listasRepository.paginaConConteos(cuentaId, incluirVacias, pagination);
   }
 
   async obtenerListaPorId(cuentaId: number, id: number) {
@@ -48,29 +34,37 @@ export class ListasService {
 
   async obtenerListaConTareas(
     cuentaId: number,
-    id: number
-  ): Promise<(ListaView & { tareas: TareaView[] }) | null> {
+    id: number,
+    pagination = paginacion()
+  ): Promise<{ data: ListaView & { tareas: TareaView[] }; meta: PageMeta } | null> {
     const lista = await this.listasRepository.obtenerPorIdYCuentaId(id, cuentaId);
     if (!lista) {
       return null;
     }
-    const tareas = await this.tareasRepository.obtenerPorListaIdYCuentaId(id, cuentaId);
+    const { rows: tareas, count } = await this.tareasRepository.obtenerPorListaIdYCuentaId(
+      id,
+      cuentaId,
+      pagination
+    );
     return {
-      id: lista.id,
-      nombre: lista.nombre,
-      descripcion: lista.descripcion,
-      color: lista.color,
-      fechaCreacion: lista.fechaCreacion,
-      tareas: tareas.map((tarea) => ({
-        id: tarea.id,
-        titulo: tarea.titulo,
-        descripcion: tarea.descripcion,
-        completada: tarea.completada,
-        prioridad: tarea.prioridad,
-        fechaVencimiento: tarea.fechaVencimiento,
-        fechaCreacion: tarea.fechaCreacion,
-        etiquetas: tarea.etiquetas,
-      })),
+      meta: pageMeta(count, pagination),
+      data: {
+        id: lista.id,
+        nombre: lista.nombre,
+        descripcion: lista.descripcion,
+        color: lista.color,
+        fechaCreacion: lista.fechaCreacion,
+        tareas: tareas.map((tarea) => ({
+          id: tarea.id,
+          titulo: tarea.titulo,
+          descripcion: tarea.descripcion,
+          completada: tarea.completada,
+          prioridad: tarea.prioridad,
+          fechaVencimiento: tarea.fechaVencimiento,
+          fechaCreacion: tarea.fechaCreacion,
+          etiquetas: tarea.etiquetas,
+        })),
+      },
     };
   }
 

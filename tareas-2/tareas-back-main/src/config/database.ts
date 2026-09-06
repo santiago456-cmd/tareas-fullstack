@@ -1,13 +1,8 @@
 import 'dotenv/config';
-import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { QueryTypes, Sequelize } from 'sequelize';
 
 export const storage = process.env.SQLITE_STORAGE || './data/db.sqlite';
-
-if (storage !== ':memory:') {
-  mkdirSync(dirname(resolve(storage)), { recursive: true });
-}
 
 export const sequelize = new Sequelize({
   dialect: 'sqlite',
@@ -16,6 +11,10 @@ export const sequelize = new Sequelize({
 });
 
 export async function prepararConexionSqlite() {
+  if (storage !== ':memory:')
+    await import('node:fs/promises').then(({ mkdir }) =>
+      mkdir(dirname(resolve(storage)), { recursive: true })
+    );
   await sequelize.authenticate();
   if (storage !== ':memory:') {
     const resultados = await sequelize.query<{ journal_mode: string }>(

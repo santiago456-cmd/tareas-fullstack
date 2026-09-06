@@ -106,6 +106,10 @@ Tarea.init(
     sequelize,
     modelName: 'Tarea',
     tableName: 'TAREAS',
+    indexes: [
+      { name: 'IX_tareas_lista_fecha_id', fields: ['ID_LISTA', 'FECHA_CREACION', 'ID_TAREA'] },
+      { name: 'IX_tareas_lista_completada', fields: ['ID_LISTA', 'COMPLETADA'] },
+    ],
     timestamps: false,
   }
 );

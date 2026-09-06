@@ -1,5 +1,6 @@
 import { prepararConexionSqlite, sequelize } from '../config/database.js';
 import '../models/associations.js';
+import { migrar } from '../migrations/runner.js';
 
 import { seedListas } from './seeders/listasSeeder.js';
 import { seedTareas } from './seeders/tareasSeeder.js';
@@ -12,9 +13,13 @@ async function main() {
 
     await prepararConexionSqlite();
     console.log('✔ Conexión establecida');
-    console.log(`🧱 Sincronizando modelos. force=${force}`);
+    console.log(`🧱 Aplicando migraciones. force=${force}`);
 
-    await sequelize.sync({ force });
+    if (force) {
+      await sequelize.drop();
+      await sequelize.query('DROP TABLE IF EXISTS SCHEMA_MIGRATIONS');
+    }
+    await migrar(sequelize);
     console.log('🌱 Insertando datos iniciales...');
 
     await seedListas();
