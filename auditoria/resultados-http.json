@@ -1,0 +1,183 @@
+[
+  {
+    "name": "sin token",
+    "status": 401,
+    "contentType": "application/json; charset=utf-8",
+    "data": {
+      "error": "TOKEN_REQUERIDO"
+    }
+  },
+  {
+    "name": "token inválido",
+    "status": 401,
+    "contentType": "application/json; charset=utf-8",
+    "data": {
+      "error": "TOKEN_INVALIDO",
+      "detalle": "Invalid Compact JWS"
+    }
+  },
+  {
+    "name": "firma incorrecta",
+    "status": 401,
+    "contentType": "application/json; charset=utf-8",
+    "data": {
+      "error": "TOKEN_INVALIDO",
+      "detalle": "signature verification failed"
+    }
+  },
+  {
+    "name": "issuer incorrecto",
+    "status": 401,
+    "contentType": "application/json; charset=utf-8",
+    "data": {
+      "error": "TOKEN_INVALIDO",
+      "detalle": "unexpected \"iss\" claim value"
+    }
+  },
+  {
+    "name": "token vencido",
+    "status": 401,
+    "contentType": "application/json; charset=utf-8",
+    "data": {
+      "error": "TOKEN_INVALIDO",
+      "detalle": "\"exp\" claim timestamp check failed"
+    }
+  },
+  {
+    "name": "token para otro cliente del mismo realm",
+    "status": 200,
+    "contentType": "application/json; charset=utf-8",
+    "data": {
+      "success": true,
+      "message": "Listas obtenidas correctamente",
+      "data": [
+        {
+          "id": 1,
+          "nombre": "Personal",
+          "descripcion": "Tareas personales",
+          "color": "#4CAF50",
+          "fechaCreacion": "2026-09-05T13:11:19.121Z",
+          "cantidadTareas": 0
+        },
+        {
+          "id": 2,
+          "nombre": "Trabajo",
+          "descripcion": "Tareas laborales",
+          "color": "#2196F3",
+          "fechaCreacion": "2026-09-05T13:11:19.123Z",
+          "cantidadTareas": 0
+        }
+      ],
+      "meta": {
+        "total": 2,
+        "incluirVacias": true
+      },
+      "error": null
+    }
+  },
+  {
+    "name": "audiencia propia rechazada",
+    "status": 401,
+    "contentType": "application/json; charset=utf-8",
+    "data": {
+      "error": "TOKEN_INVALIDO",
+      "detalle": "unexpected \"aud\" claim value"
+    }
+  },
+  {
+    "name": "usuario sin admin",
+    "status": 403,
+    "contentType": "application/json; charset=utf-8",
+    "data": {
+      "error": "NO_AUTORIZADO",
+      "rolRequerido": "admin"
+    }
+  },
+  {
+    "name": "admin permitido",
+    "status": 200,
+    "contentType": "application/json; charset=utf-8",
+    "data": {
+      "success": true,
+      "message": "Cuentas obtenidas correctamente",
+      "data": [
+        {
+          "id": 1,
+          "keycloakSub": "audit-other-client",
+          "username": "audit-other-client",
+          "email": null
+        }
+      ],
+      "meta": {
+        "total": 1
+      },
+      "error": null
+    }
+  },
+  {
+    "name": "JSON malformado",
+    "status": 400,
+    "contentType": "text/html; charset=utf-8",
+    "data": {
+      "html": true
+    }
+  },
+  {
+    "name": "body mayor de límite",
+    "status": 413,
+    "contentType": "text/html; charset=utf-8",
+    "data": {
+      "html": true
+    }
+  },
+  {
+    "name": "nombre numérico HTTP",
+    "status": 500,
+    "contentType": "application/json; charset=utf-8",
+    "data": {
+      "success": false,
+      "message": "Error al crear la lista",
+      "data": null,
+      "meta": null,
+      "error": {
+        "code": "LISTA_CREATE_ERROR",
+        "details": {
+          "error": "datos?.nombre?.trim is not a function"
+        }
+      }
+    }
+  },
+  {
+    "name": "PATCH recurso inexistente",
+    "status": 404,
+    "contentType": "application/json; charset=utf-8",
+    "data": {
+      "success": false,
+      "message": "La tarea solicitada no existe",
+      "data": null,
+      "meta": null,
+      "error": {
+        "code": "TAREA_NO_ENCONTRADA",
+        "details": null
+      }
+    }
+  },
+  {
+    "name": "ruta inexistente",
+    "status": 404,
+    "contentType": "application/json; charset=utf-8",
+    "data": {
+      "success": false,
+      "message": "El recurso solicitado no existe",
+      "data": null,
+      "meta": null,
+      "error": {
+        "code": "ROUTE_NOT_FOUND",
+        "details": {
+          "method": "GET",
+          "path": "/api/no-existe"
+        }
+      }
+    }
+  }
+]

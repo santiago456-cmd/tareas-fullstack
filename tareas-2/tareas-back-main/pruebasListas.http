@@ -1,0 +1,45 @@
+### Listar todas las listas
+
+GET http://localhost:3000/api/listas
+Accept: application/json
+
+### Listar solo listas con tareas
+
+GET http://localhost:3000/api/listas?incluirVacias=false
+Accept: application/json
+
+### Obtener lista por id
+
+GET http://localhost:3000/api/listas/2
+Accept: application/json
+
+### Obtener tareas de una lista
+
+GET http://localhost:3000/api/listas/2/tareas
+Accept: application/json
+
+### Crear nueva lista
+
+POST http://localhost:3000/api/listas
+Content-Type: application/json
+
+{
+ "nombre": "Investigación",
+ "descripcion": "Tareas asociadas a proyectos de investigación",
+ "color": "azul"
+}
+
+### Actualizar lista
+
+PATCH http://localhost:3000/api/listas/6
+Content-Type: application/json
+
+{
+ "nombre": "Investigación DDS",
+ "color": "violeta"
+}
+
+### Eliminar lista
+
+DELETE http://localhost:3000/api/listas/6
+Accept: application/json

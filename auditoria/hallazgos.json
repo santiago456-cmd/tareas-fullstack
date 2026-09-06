@@ -1,0 +1,979 @@
+[
+  {
+    "id": "SEC-01",
+    "prioridad": "P1",
+    "area": "Autenticación",
+    "titulo": "La API valida la audiencia genérica account",
+    "evidencia": "HTTP reproducido con JWKS sintético",
+    "detalle": "Un token firmado por el emisor de prueba, con aud=account y azp=otro-cliente, obtiene 200 y provisiona una cuenta. Un token con aud=tareas-api obtiene 401. La firma y el emisor sí se verifican: el problema es aceptar tokens destinados a otro servicio del mismo realm, no una falsificación sin clave.",
+    "recomendacion": "Definir una audiencia exclusiva de esta API, emitirla mediante un mapper/scope de Keycloak y validarla. Separar cliente SPA y recurso API; restringir azp únicamente si la política exige clientes concretos.",
+    "criterio": "Token dirigido exclusivamente a otro servicio → 401; token con audiencia de tareas → acceso según usuario/roles.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/middlewares/tokenExtractor.js",
+        "linea": 22
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/scripts/setup-keycloak.sh",
+        "linea": 111
+      }
+    ],
+    "fuente": "Keycloak recomienda verificar la audiencia del servicio: [documentación oficial](https://www.keycloak.org/docs/latest/server_admin/index.html#_audience).",
+    "estado": "implementado; pruebas locales y recorrido manual con Keycloak real verificados",
+    "seguimiento": "ITERACION-02.md"
+  },
+  {
+    "id": "SEC-02",
+    "prioridad": "P1",
+    "area": "Configuración",
+    "titulo": "Keycloak de desarrollo se publica con credenciales conocidas",
+    "evidencia": "Código; impacto condicionado a exposición de red",
+    "detalle": "Compose publica 8081 en todas las interfaces, ejecuta start-dev y fija la contraseña administrativa. El setup fija contraseñas de usuarios de prueba y vuelve a cambiarlas incluso si existen. No se comprobó exposición externa ni se ejecutó el setup.",
+    "recomendacion": "Restringir el entorno de práctica a loopback. Separar configuración de producción con TLS, secretos externos y cuentas sin credenciales de demostración. Hacer que el setup no restablezca contraseñas existentes por defecto.",
+    "criterio": "Entorno local accesible solo desde loopback; despliegue real sin start-dev ni credenciales demo; segunda ejecución del setup no cambia credenciales.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/docker-compose.yml",
+        "linea": 5
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/scripts/setup-keycloak.sh",
+        "linea": 141
+      }
+    ],
+    "estado": "entorno local corregido y verificado; producción no desplegada",
+    "seguimiento": "ITERACION-03.md"
+  },
+  {
+    "id": "SEC-03",
+    "prioridad": "P2",
+    "area": "Autenticación",
+    "titulo": "Conviven dos flujos OAuth incompatibles y uno devuelve tokens en JSON",
+    "evidencia": "Código/configuración",
+    "detalle": "El backend usa callback :3000/auth/callback; el setup registra por defecto :5173/auth/callback. La SPA utiliza su propio PKCE. El callback backend devuelve todos los tokens; su state vive en una Map local sin vínculo al navegador, sin límite de entradas y sin persistencia entre procesos. El logger registra code/state en originalUrl. No se demostró un ataque de sesión.",
+    "recomendacion": "Elegir y documentar un flujo. Si el backend es solo API, retirar o deshabilitar las rutas demo en producción. Si actúa como BFF, completar sesión, correlación por navegador, caducidad, límites, no-store y redacción de logs.",
+    "criterio": "Un único recorrido de login soportado; URI coherente; ningún token/código en respuestas demo o logs de producción; comportamiento definido con múltiples instancias.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/.env.example",
+        "linea": 9
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/scripts/setup-keycloak.sh",
+        "linea": 10
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/routes/authRoutes.js",
+        "linea": 32
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/services/oauthService.js",
+        "linea": 39
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/middlewares/requestLogger.js",
+        "linea": 5
+      }
+    ],
+    "estado": "implementado; pruebas locales y recorrido manual con Keycloak real verificados",
+    "seguimiento": "ITERACION-02.md"
+  },
+  {
+    "id": "SEC-04",
+    "prioridad": "P2",
+    "area": "Sesión",
+    "titulo": "Access, refresh e ID token se guardan en localStorage",
+    "evidencia": "Código; riesgo condicionado a ejecución de scripts en el origen",
+    "detalle": "Los tres tokens persisten entre sesiones de navegador y quedan disponibles para JavaScript del origen. El refresh token se almacena pero no se usa. No se identificó un vector XSS explotable en el código revisado: los textos normales se renderizan mediante React.",
+    "recomendacion": "Definir estrategia de sesión: tokens en memoria con renovación controlada o BFF con cookies HttpOnly/Secure y protección CSRF. Reducir persistencia y limpiar todo al expirar/cerrar sesión; valorar CSP y dependencias de terceros.",
+    "criterio": "La política de persistencia es explícita y probada; no se conserva un refresh token que la aplicación no necesita.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/auth/oauth.js",
+        "linea": 115
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/auth/oauth.js",
+        "linea": 126
+      }
+    ],
+    "estado": "implementado; pruebas locales y recorrido manual con Keycloak real verificados",
+    "seguimiento": "ITERACION-02.md"
+  },
+  {
+    "id": "BE-01",
+    "prioridad": "P1",
+    "area": "Persistencia",
+    "titulo": "SQLite usa journal_mode=MEMORY incluso con archivo persistente",
+    "evidencia": "Código y documentación de SQLite",
+    "detalle": "prepararConexionSqlite fuerza journaling en memoria. Un fallo del proceso durante una escritura puede corromper una base persistente; no se provocó una caída ni se corrompió una base para demostrarlo.",
+    "recomendacion": "Usar un modo persistente apropiado —por ejemplo WAL después de validar el entorno— y definir sincronización, backup y restauración. Conservar :memory: para pruebas aisladas.",
+    "criterio": "La base persistente no usa MEMORY; respaldo y restauración verificados en entorno descartable.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/config/database.js",
+        "linea": 18
+      }
+    ],
+    "fuente": "SQLite documenta este riesgo: [How To Corrupt An SQLite Database File](https://www.sqlite.org/howtocorrupt.html).",
+    "estado": "implementado y verificado localmente",
+    "seguimiento": "ITERACION-01.md"
+  },
+  {
+    "id": "BE-02",
+    "prioridad": "P1",
+    "area": "Contrato API/UI",
+    "titulo": "Etiquetas inválidas se guardan y pueden romper toda la vista",
+    "evidencia": "Persistencia real en memoria y navegador con fixture",
+    "detalle": "crearTarea acepta etiquetas:\"texto\" y responde 201; el getter devuelve ese string. TarjetaTarea llama .map y produce TypeError. En navegador la vista queda en blanco. Un array con objetos tampoco cumple el contrato de strings. El alcance observado es la información de la cuenta que contiene la tarea.",
+    "recomendacion": "Validar array de strings, longitudes y cantidad al crear/editar; normalizar datos existentes. Añadir defensa de render y un Error Boundary como contención.",
+    "criterio": "String, objeto y array de objetos → 400; etiquetas válidas funcionan; una respuesta inválida no desmonta toda la aplicación.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/services/TareasService.js",
+        "linea": 97
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/models/tarea.js",
+        "linea": 68
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/TarjetaTarea.jsx",
+        "linea": 74
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/EtiquetasInput/EtiquetasInput.jsx",
+        "linea": 34
+      }
+    ],
+    "estado": "implementado y verificado localmente",
+    "seguimiento": "ITERACION-01.md"
+  },
+  {
+    "id": "BE-03",
+    "prioridad": "P2",
+    "area": "Validación",
+    "titulo": "Tipos y límites de entrada no se validan integralmente",
+    "evidencia": "Controladores/servicios ejecutados",
+    "detalle": "nombre:123 y titulo:123 generan 500; PATCH nombre:null o sin body también. Descripciones de 251/501 caracteres y color de 31 se guardan con 201, excediendo el contrato declarado. STRING(n) no está imponiendo esos límites en SQLite. fechaVencimiento y listaId tampoco tienen validación explícita completa.",
+    "recomendacion": "Introducir esquemas por operación para body, query e IDs, con tipos, trim, nullability, límites y fecha calendario válida. Rechazar campos desconocidos o documentar su tratamiento; mapear errores de validación del ORM.",
+    "criterio": "Entradas inválidas → 400 uniforme; longitudes y fechas límite comprobadas; PATCH vacío/solo desconocidos tiene una política explícita.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/services/listasService.js",
+        "linea": 63
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/services/listasService.js",
+        "linea": 105
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/services/TareasService.js",
+        "linea": 59
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/services/TareasService.js",
+        "linea": 122
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/models/lista.js",
+        "linea": 30
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/models/tarea.js",
+        "linea": 26
+      }
+    ],
+    "estado": "implementado y verificado localmente",
+    "seguimiento": "ITERACION-01.md"
+  },
+  {
+    "id": "BE-04",
+    "prioridad": "P1",
+    "area": "Concurrencia",
+    "titulo": "El alta automática de cuenta no es atómica ni tolera concurrencia",
+    "evidencia": "Carrera real e inyección de fallo",
+    "detalle": "Dos resolverDesdeUsuario simultáneos para el mismo sub producen un éxito y un SequelizeUniqueConstraintError. Si falla la creación de listas de bienvenida, la cuenta queda creada; el siguiente acceso la devuelve con cero listas y no repara la inicialización. Tareas.jsx y StrictMode pueden generar solicitudes simultáneas en el primer ingreso.",
+    "recomendacion": "Resolver cuenta y bienvenida en una transacción; usar unicidad como garantía y tratar/reintentar la carrera según SQLite. Diseñar inicialización idempotente.",
+    "criterio": "Primer acceso paralelo sin 500; exactamente una cuenta y dos listas; fallo intermedio revierte todo o permite reparación segura.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/services/CuentasService.js",
+        "linea": 15
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/middlewares/resolverCuenta.js",
+        "linea": 8
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/Tareas.jsx",
+        "linea": 30
+      }
+    ],
+    "estado": "implementado y verificado localmente",
+    "seguimiento": "ITERACION-01.md"
+  },
+  {
+    "id": "BE-05",
+    "prioridad": "P1",
+    "area": "Integridad",
+    "titulo": "Eliminar una lista puede borrar tareas y después fallar",
+    "evidencia": "Fallo inyectado y carrera controlada",
+    "detalle": "Se eliminan tareas completadas y luego la lista en operaciones separadas. Al simular fallo en el segundo paso, la lista permanece y sus tareas completadas ya desaparecieron. Si aparece una tarea pendiente entre el conteo y el borrado, la FK NO ACTION conserva esa tarea y provoca error: no se observó borrado de pendientes por cascada.",
+    "recomendacion": "Agrupar comprobación y borrados en transacción con estrategia de concurrencia/reintento. Traducir conflictos de integridad a respuesta de negocio.",
+    "criterio": "Ante cualquier fallo se conservan lista y tareas; creación concurrente no produce pérdida parcial y devuelve conflicto controlado.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/services/listasService.js",
+        "linea": 150
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/repositories/tareasRepository.js",
+        "linea": 59
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/repositories/baseRepository.js",
+        "linea": 26
+      }
+    ],
+    "estado": "implementado y verificado localmente",
+    "seguimiento": "ITERACION-01.md"
+  },
+  {
+    "id": "BE-06",
+    "prioridad": "P2",
+    "area": "Concurrencia",
+    "titulo": "La unicidad concurrente termina en 500",
+    "evidencia": "Carrera real contra SQLite en memoria",
+    "detalle": "Dos creaciones simultáneas de la misma lista pasan la consulta previa; la restricción única permite una y la otra arroja SequelizeUniqueConstraintError. La integridad se conserva, pero los controladores convierten el conflicto en 500.",
+    "recomendacion": "Conservar el índice único y traducir su error a 409. Aplicar igual tratamiento en cambios de nombre y aprovisionamiento.",
+    "criterio": "Una creación 201 y otra 409; nunca duplicados ni 500 por un conflicto esperado.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/services/listasService.js",
+        "linea": 72
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/models/lista.js",
+        "linea": 52
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/controllers/listasController.js",
+        "linea": 251
+      }
+    ],
+    "estado": "implementado y verificado localmente",
+    "seguimiento": "ITERACION-01.md"
+  },
+  {
+    "id": "BE-07",
+    "prioridad": "P2",
+    "area": "Errores/observabilidad",
+    "titulo": "No hay middleware global de errores y se exponen detalles internos",
+    "evidencia": "HTTP reproducido",
+    "detalle": "JSON malformado devuelve 400 HTML y un cuerpo grande 413 HTML; los errores de negocio usan otro sobre y autenticación un tercero. Los catches incluyen error.message del ORM/implementación. express.json se ejecuta antes de CORS y logger, por lo que sus fallos tampoco recorren esos middlewares.",
+    "recomendacion": "Definir un único formato y un middleware final de errores; redacción de detalles, request ID y registro interno con contexto. Revisar orden de CORS/logger/parser.",
+    "criterio": "400,401,403,404,409,413 y 500 usan JSON consistente; no se exponen trazas/SQL; errores de parseo quedan observables.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/app.js",
+        "linea": 16
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/controllers/TareasController.js",
+        "linea": 212
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/middlewares/resolverCuenta.js",
+        "linea": 11
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/repositories/errores.js",
+        "linea": 7
+      }
+    ],
+    "estado": "implementado y verificado localmente",
+    "seguimiento": "ITERACION-01.md"
+  },
+  {
+    "id": "BE-08",
+    "prioridad": "P2",
+    "area": "Operación",
+    "titulo": "Health-check indica éxito HTTP aunque falle la base",
+    "evidencia": "Fallo de DB simulado",
+    "detalle": "Con authenticate fallando, responde HTTP 200, success:true, mensaje de funcionamiento correcto y data.status=DEGRADED. Además authenticate solo prueba conectividad, no que existan tablas o que el esquema sea compatible; configuration se fija en OK.",
+    "recomendacion": "Separar liveness de readiness; readiness 503 cuando no se pueden servir solicitudes. Validar esquema/configuración sin exponer información de runtime innecesaria.",
+    "criterio": "Monitor HTTP distingue servicio listo de DB caída/esquema faltante; no declara configuración válida sin comprobarla.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/controllers/healthCheckController.js",
+        "linea": 34
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/services/healthCheckService.js",
+        "linea": 8
+      }
+    ],
+    "estado": "implementado y verificado localmente",
+    "seguimiento": "ITERACION-03.md"
+  },
+  {
+    "id": "BE-09",
+    "prioridad": "P2",
+    "area": "Rendimiento",
+    "titulo": "GET listas realiza N+1 consultas secuenciales",
+    "evidencia": "Medición SQL",
+    "detalle": "Con 3 listas se ejecutan 4 consultas: una de listas y un COUNT por cada lista, esperado de forma serial. Tareas.jsx también solicita listas, por lo que el coste repercute en ambas pantallas.",
+    "recomendacion": "Agregar conteos por GROUP BY/JOIN o consulta agrupada y mantener el filtro de cuenta.",
+    "criterio": "El número de consultas se mantiene constante al aumentar listas; conteos incluyen listas vacías correctamente.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/services/listasService.js",
+        "linea": 14
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/repositories/tareasRepository.js",
+        "linea": 10
+      }
+    ]
+  },
+  {
+    "id": "BE-10",
+    "prioridad": "P2",
+    "area": "Escalabilidad",
+    "titulo": "Colecciones sin paginación e índice faltante en tareas",
+    "evidencia": "Código y PRAGMA index_list",
+    "detalle": "Listas, tareas y endpoints admin devuelven colecciones completas. La tabla TAREAS recién sincronizada no tiene índices; se filtra por lista/estado y se ordena por fecha. El frontend descarga todo, filtra localmente y busca cada nombre de lista linealmente.",
+    "recomendacion": "Definir paginación, filtros y orden en API, límites de tamaño y proyección de atributos. Agregar índices basados en consultas medidas; usar Map por id en frontend.",
+    "criterio": "Conjunto grande responde por páginas acotadas; planes de consulta y latencia medidos. No se propone un índice compuesto sin revisar EXPLAIN.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/repositories/tareasRepository.js",
+        "linea": 36
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/models/tarea.js",
+        "linea": 89
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/controllers/adminController.js",
+        "linea": 8
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/Tareas.jsx",
+        "linea": 50
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/repositories/tareas.repository.js",
+        "linea": 5
+      }
+    ]
+  },
+  {
+    "id": "BE-11",
+    "prioridad": "P2",
+    "area": "Inicialización",
+    "titulo": "init-db termina con código 0 incluso cuando falla",
+    "evidencia": "Proceso real ejecutado",
+    "detalle": "Al ejecutar initDb con SQLITE_STORAGE=/tmp (directorio, no archivo), aparece SQLITE_CANTOPEN y el proceso termina con exit 0. Scripts/CI pueden continuar creyendo que la base se inicializó.",
+    "recomendacion": "Asignar exitCode=1 al capturar errores; cerrar la conexión en finally sin sobrescribir el resultado.",
+    "criterio": "Inicialización fallida devuelve código distinto de cero; exit 0 únicamente tras completar todas las operaciones.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/scripts/initDb.js",
+        "linea": 23
+      }
+    ],
+    "estado": "implementado y verificado localmente",
+    "seguimiento": "ITERACION-03.md"
+  },
+  {
+    "id": "BE-12",
+    "prioridad": "P2",
+    "area": "Evolución de datos",
+    "titulo": "No hay migraciones versionadas ni procedimiento de restauración",
+    "evidencia": "Inventario/código",
+    "detalle": "Solo se ofrece sequelize.sync y --force. sync sin alter no aplica de forma general cambios a tablas existentes; --force las destruye. No aparecen migraciones, pruebas de actualización ni instrucciones de backup/restore.",
+    "recomendacion": "Añadir migraciones versionadas y distinguir datos demo del despliegue. Documentar respaldo, actualización y recuperación; impedir reseteos accidentales en entornos reales.",
+    "criterio": "Una versión anterior se actualiza preservando datos; recuperación probada sobre copia descartable.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/scripts/initDb.js",
+        "linea": 7
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/package.json",
+        "linea": 16
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/README.md",
+        "linea": 120
+      }
+    ]
+  },
+  {
+    "id": "BE-13",
+    "prioridad": "P1",
+    "area": "Empaquetado",
+    "titulo": "Producción requiere paquetes declarados como devDependencies",
+    "evidencia": "Dependencias e imports verificados",
+    "detalle": "src/app.js importa swagger-ui-express siempre; docs/swagger.js importa swagger-jsdoc siempre. Ambos están en devDependencies. Una instalación limpia que omita desarrollo no puede resolver esos imports al arrancar.",
+    "recomendacion": "Mover paquetes usados en runtime a dependencies o cargar documentación condicionalmente sin imports estáticos de paquetes ausentes.",
+    "criterio": "Instalación limpia de producción inicia y responde readiness; la decisión de exponer Swagger es explícita.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/app.js",
+        "linea": 2
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/docs/swagger.js",
+        "linea": 1
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/package.json",
+        "linea": 38
+      }
+    ],
+    "estado": "implementado y verificado localmente",
+    "seguimiento": "ITERACION-03.md"
+  },
+  {
+    "id": "BE-14",
+    "prioridad": "P3",
+    "area": "Arquitectura/operación",
+    "titulo": "Arranque acoplado a imports y sin cierre controlado",
+    "evidencia": "Código",
+    "detalle": "createApp no se exporta y main se ejecuta al importar. No hay gestión de SIGTERM/SIGINT ni cierre de servidor y sequelize; env convierte configuraciones faltantes en defaults y el JWKS puede fallar al construir una URL antes de main.",
+    "recomendacion": "Exportar fábrica de app sin efectos de arranque y separar entrypoint; validar configuración al iniciar y cerrar conexiones al recibir señales.",
+    "criterio": "Importar app no abre puertos; configuración inválida produce diagnóstico claro; apagado controlado con solicitudes en curso.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/app.js",
+        "linea": 13
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/app.js",
+        "linea": 43
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/config/env.js",
+        "linea": 3
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/middlewares/tokenExtractor.js",
+        "linea": 4
+      }
+    ]
+  },
+  {
+    "id": "FE-01",
+    "prioridad": "P1",
+    "area": "Sesión",
+    "titulo": "Token vencido mantiene una sesión aparente e inutilizable",
+    "evidencia": "Módulo ejecutado y código",
+    "detalle": "estaAutenticado solo comprueba que exista access_token: incluso una cadena inválida devuelve true. Axios adjunta el token sin renovar ni tratar globalmente 401. La API sí rechaza tokens vencidos, por lo que el usuario queda dentro de pantallas que fallan hasta reingresar.",
+    "recomendacion": "Implementar estado de sesión central, expiración y renovación sincronizada, o cierre/reingreso explícito al expirar. Preservar la ruta solicitada.",
+    "criterio": "Vencimiento con varias solicitudes concurrentes se recupera una sola vez o cierra sesión de forma coherente; sin bucles de 401.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/auth/oauth.js",
+        "linea": 142
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/repositories/axios.config.js",
+        "linea": 15
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/RequiereAuth.jsx",
+        "linea": 9
+      }
+    ],
+    "estado": "implementado; pruebas locales y recorrido manual con Keycloak real verificados",
+    "seguimiento": "ITERACION-02.md"
+  },
+  {
+    "id": "FE-02",
+    "prioridad": "P2",
+    "area": "Estado de sesión",
+    "titulo": "La barra superior no se actualiza después del callback",
+    "evidencia": "Código; no login real",
+    "detalle": "TokenBar lee almacenamiento al montar y en un efecto vacío. LayoutPrincipal permanece montado durante el callback y la navegación a /listas, de modo que la barra puede seguir mostrando Ingresar después de guardar tokens. Tampoco hay sincronización de logout entre pestañas; sin id_token cerrarSesion no navega.",
+    "recomendacion": "Hacer que TokenBar y RequiereAuth consuman el mismo estado reactivo y notificar login, logout y renovación. Tratar eventos entre pestañas si se comparte sesión.",
+    "criterio": "Después del callback aparece usuario/Salir sin recargar; logout actualiza inmediatamente todas las vistas relevantes.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/TokenBar.jsx",
+        "linea": 18
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/layouts/LayoutPrincipal.jsx",
+        "linea": 6
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/auth/oauth.js",
+        "linea": 117
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/auth/oauth.js",
+        "linea": 133
+      }
+    ],
+    "estado": "implementado; pruebas locales y recorrido manual con Keycloak real verificados",
+    "seguimiento": "ITERACION-02.md"
+  },
+  {
+    "id": "FE-03",
+    "prioridad": "P1",
+    "area": "Login",
+    "titulo": "El callback puede canjear dos veces el mismo código en desarrollo",
+    "evidencia": "Código y proveedor de un solo uso simulado",
+    "detalle": "main.jsx activa StrictMode; AuthCallback lanza manejarCallback desde un efecto sin deduplicación. Dos invocaciones concurrentes emitieron dos requests y terminaron en éxito/error. El resultado visible contra Keycloak real depende del orden de respuesta y no se probó porque está detenido.",
+    "recomendacion": "Deduplicar el intercambio por código/state o usar una implementación OIDC con ciclo de vida controlado. No ocultar el problema desactivando StrictMode.",
+    "criterio": "Con StrictMode y reentradas del callback se efectúa un solo intercambio lógico y se evita publicar errores tardíos sobre una sesión válida.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/main.jsx",
+        "linea": 7
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/AuthCallback.jsx",
+        "linea": 15
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/auth/oauth.js",
+        "linea": 90
+      }
+    ],
+    "fuente": "React ejecuta un ciclo extra de efectos en desarrollo: [StrictMode](https://react.dev/reference/react/StrictMode).",
+    "estado": "implementado; pruebas locales y recorrido manual con Keycloak real verificados",
+    "seguimiento": "ITERACION-02.md"
+  },
+  {
+    "id": "FE-04",
+    "prioridad": "P1",
+    "area": "Responsive",
+    "titulo": "El modal se recorta en pantallas de poca altura",
+    "evidencia": "Navegador con componente real y datos simulados",
+    "detalle": "A 375×667 el botón Guardar ocupa y=633..677: parte queda fuera del viewport y también se recorta el encabezado. Overlay está fixed, centrado, sin overflow de desplazamiento, y la tarjeta no limita altura. El formulario crece con etiquetas/errores y textarea redimensionable.",
+    "recomendacion": "Limitar altura al viewport dinámico, habilitar scroll interno/overlay y mantener acciones alcanzables. Probar teclado virtual y zoom.",
+    "criterio": "Título, campos, errores y acciones accesibles a 320×568, 375×667 y con zoom/teclado; no se pierde contenido fuera del área desplazable.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/ui/Modal/Modal.module.css",
+        "linea": 1
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/ui/Modal/Modal.module.css",
+        "linea": 14
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/FormularioTarea/FormularioTarea.module.css",
+        "linea": 55
+      }
+    ]
+  },
+  {
+    "id": "FE-05",
+    "prioridad": "P2",
+    "area": "Responsive/navegación",
+    "titulo": "En móvil desaparece el acceso a Todas las tareas",
+    "evidencia": "Navegador a 390×844 y código",
+    "detalle": "La navegación Listas/Tareas usa display:none por debajo de 768px y no existe menú alternativo. El logo solo vuelve a listas. El árbol accesible confirma que los dos enlaces desaparecen.",
+    "recomendacion": "Mantener navegación compacta visible o agregar un menú móvil operable con teclado.",
+    "criterio": "Todas las pantallas principales son alcanzables desde la UI a 320–767px.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/Encabezado.module.css",
+        "linea": 36
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/Encabezado.jsx",
+        "linea": 19
+      }
+    ]
+  },
+  {
+    "id": "FE-06",
+    "prioridad": "P2",
+    "area": "Accesibilidad",
+    "titulo": "El modal no tiene semántica ni manejo de foco",
+    "evidencia": "DOM y código",
+    "detalle": "No existe role=dialog/aria-modal, nombre enlazado, foco inicial, confinamiento del foco ni Escape. El backdrop cierra el formulario inmediatamente; no hay tratamiento de cambios sin guardar.",
+    "recomendacion": "Usar un diálogo accesible con foco inicial/retorno, teclado y fondo inerte. Definir cierre seguro cuando haya edición pendiente.",
+    "criterio": "Navegación completa con teclado y lector de pantalla; foco no llega al fondo; cierre/retorno de foco predecibles.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/ui/Modal/Modal.jsx",
+        "linea": 7
+      }
+    ]
+  },
+  {
+    "id": "FE-07",
+    "prioridad": "P2",
+    "area": "Accesibilidad",
+    "titulo": "Editar/eliminar listas quedan invisibles al tabular",
+    "evidencia": "Navegador",
+    "detalle": "Se enfocó el botón edit mediante Tab y su contenedor conservó opacity:0. Solo :hover revela las acciones, sin :focus-within ni alternativa para dispositivos sin hover.",
+    "recomendacion": "Mostrar acciones con :focus-within y por defecto cuando hover no está disponible; mantener indicadores de foco claros.",
+    "criterio": "El usuario puede ver la acción que recibe foco; controles descubribles en pantallas táctiles.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/ListaCard/ListaCard.module.css",
+        "linea": 18
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/ListaCard/ListaCard.module.css",
+        "linea": 44
+      }
+    ]
+  },
+  {
+    "id": "FE-08",
+    "prioridad": "P2",
+    "area": "Accesibilidad",
+    "titulo": "Nombres de controles, errores y grupo radio incompletos",
+    "evidencia": "Árbol accesible/código",
+    "detalle": "Nueva lista y etiquetas no tienen etiqueta asociada; filtros se anuncian como filter_list/priority_high/check_circle. Botones con iconos se anuncian como edit/delete en lugar de la acción en español. Errores de campos no usan aria-describedby/aria-invalid. El radiogroup de prioridad no implementa navegación de flechas.",
+    "recomendacion": "Etiquetas explícitas, iconos decorativos aria-hidden, nombres contextuales en acciones, asociación de errores y radios nativos o patrón de teclado completo.",
+    "criterio": "Árbol accesible en español describe cada control sin depender de iconos/placeholder; errores anunciados; prioridad seleccionable con flechas.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/NuevaListaForm/NuevaListaForm.jsx",
+        "linea": 20
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/FormularioTarea/FormularioTarea.jsx",
+        "linea": 79
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/BarraFiltros/BarraFiltros.jsx",
+        "linea": 17
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/SelectorPrioridad/SelectorPrioridad.jsx",
+        "linea": 15
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/TarjetaTarea.jsx",
+        "linea": 85
+      }
+    ]
+  },
+  {
+    "id": "FE-09",
+    "prioridad": "P2",
+    "area": "Mutaciones",
+    "titulo": "Guardar y otras acciones permiten envíos duplicados",
+    "evidencia": "Código",
+    "detalle": "Formularios y handlers de completar/eliminar no exponen isSubmitting/pending ni bloquean el control. Dos clicks antes de finalizar el POST pueden crear dos tareas. Se puede cerrar el modal mientras se guarda y recibir navegación/toasts tardíos.",
+    "recomendacion": "Estado pending por formulario/recurso, controles deshabilitados y manejo coherente de cancelación. Considerar idempotencia en API si el producto debe soportar reintentos de red.",
+    "criterio": "Doble click y conexión lenta no duplican altas; feedback visible; finalizar una petición no cambia una pantalla que el usuario ya abandonó.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/TareaForm.jsx",
+        "linea": 49
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/TareaForm.jsx",
+        "linea": 82
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/ListaForm.jsx",
+        "linea": 40
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/Tareas.jsx",
+        "linea": 52
+      }
+    ]
+  },
+  {
+    "id": "FE-10",
+    "prioridad": "P2",
+    "area": "Errores/recuperación",
+    "titulo": "Fallas de carga se presentan como vacío o pantalla sin formulario",
+    "evidencia": "Navegador con error simulado y código",
+    "detalle": "ListaForm/TareaForm retornan null mientras no hay datos; si el GET falla, el estado no cambia y solo hay un toast transitorio. Listas/Tareas dejan arrays vacíos ante error inicial, mostrando ausencia de datos. ListaDetalle conserva la lista anterior si cambia id y la nueva petición falla.",
+    "recomendacion": "Modelar loading/error/success por recurso, con error persistente, reintento y navegación de salida. Limpiar estado al cambiar identidad de recurso.",
+    "criterio": "404/500/red caída tienen vistas diferenciadas; no se muestran datos anteriores bajo una URL nueva ni un vacío engañoso.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/ListaForm.jsx",
+        "linea": 26
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/ListaForm.jsx",
+        "linea": 55
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/TareaForm.jsx",
+        "linea": 30
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/Listas.jsx",
+        "linea": 18
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/ListaDetalle.jsx",
+        "linea": 23
+      }
+    ]
+  },
+  {
+    "id": "FE-11",
+    "prioridad": "P2",
+    "area": "Concurrencia UI",
+    "titulo": "Respuestas antiguas pueden sobrescribir una ruta nueva",
+    "evidencia": "Código; escenario deducido",
+    "detalle": "Los efectos de ListaDetalle, ListaForm y TareaForm no cancelan ni descartan resultados al cambiar id. Dos respuestas pueden llegar en orden inverso. FormularioTarea usa defaultValues sin reset al cambiar valoresIniciales, por lo que reutilizar la instancia para otro id puede mantener campos anteriores.",
+    "recomendacion": "AbortController o descarte por identidad de solicitud; reset controlado/key cuando cambia el recurso. Extraer hooks de carga compartidos cuando aporte claridad.",
+    "criterio": "Navegar A→B con A lento muestra y guarda siempre B; ninguna respuesta vieja sobrescribe B.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/ListaDetalle.jsx",
+        "linea": 18
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/ListaForm.jsx",
+        "linea": 26
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/TareaForm.jsx",
+        "linea": 30
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/FormularioTarea/FormularioTarea.jsx",
+        "linea": 25
+      }
+    ]
+  },
+  {
+    "id": "FE-12",
+    "prioridad": "P2",
+    "area": "Navegación",
+    "titulo": "Editar fuerza recarga y cerrar tarea depende del historial",
+    "evidencia": "Código",
+    "detalle": "Listas.editar usa window.location.href, recargando la SPA y dependiendo del fallback del servidor para rutas profundas. TareaForm usa navigate(-1) al cerrar/guardar edición: una apertura directa puede salir del sitio o no regresar a una vista útil. No hay fallback explícito a la lista de origen.",
+    "recomendacion": "Usar navegación de React Router y retorno determinado por contexto/listaId, con fallback seguro para entradas directas.",
+    "criterio": "Editar desde UI no recarga documento; abrir URL de edición en nueva pestaña y cerrar vuelve a una pantalla válida de tareas.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/Listas.jsx",
+        "linea": 40
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/TareaForm.jsx",
+        "linea": 47
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/TareaForm.jsx",
+        "linea": 62
+      }
+    ]
+  },
+  {
+    "id": "FE-13",
+    "prioridad": "P2",
+    "area": "Formularios",
+    "titulo": "Crear lista borra el texto aunque falle",
+    "evidencia": "Navegador con fallo simulado",
+    "detalle": "NuevaListaForm invoca onCrear sin await y limpia nombre inmediatamente. Se comprobó que un fallo deja el input vacío. Solo comprueba no vacío, mientras la API pide 3–100 caracteres.",
+    "recomendacion": "Esperar resultado exitoso antes de limpiar; propagar éxito/error del handler; validar longitud y mostrar error junto al campo.",
+    "criterio": "Ante fallo se conserva el nombre escrito; al crear correctamente se limpia; 1–2 o más de 100 caracteres no se envían.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/NuevaListaForm/NuevaListaForm.jsx",
+        "linea": 11
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/Listas.jsx",
+        "linea": 30
+      }
+    ]
+  },
+  {
+    "id": "FE-14",
+    "prioridad": "P3",
+    "area": "CSS",
+    "titulo": "CSS Modules renombra la clase global de iconos",
+    "evidencia": "CSS compilado y estilo computado",
+    "detalle": "Selectores como .badge .material-symbols-outlined se convierten en dos clases locales; JSX usa material-symbols-outlined global. La regla de 14px del badge no coincide: se midieron 24px. Ocurre también en filtros, fechas, selector y etiquetas.",
+    "recomendacion": "Marcar la clase global mediante :global(...) o asignar una clase local propia al span.",
+    "criterio": "Badge usa 14px y filtros/fechas sus tamaños declarados; selectores del CSS compilado coinciden con el DOM.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/ui/Badge/Badge.module.css",
+        "linea": 13
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/TarjetaTarea.module.css",
+        "linea": 88
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/BarraFiltros/BarraFiltros.module.css",
+        "linea": 31
+      }
+    ]
+  },
+  {
+    "id": "FE-15",
+    "prioridad": "P3",
+    "area": "Producto/contrato",
+    "titulo": "Descripción y color de listas tienen un recorrido incompleto",
+    "evidencia": "Código",
+    "detalle": "Se puede editar descripción, pero ListaCard y el encabezado de detalle no la muestran. La API admite nombres de color; seeds usan gris/azul/violeta y el frontend pasa el valor directamente a CSS/input type=color, que no representan esos nombres en español. Los datos seed además pertenecen a un sub sintético sin login normal.",
+    "recomendacion": "Mostrar descripción donde aporte contexto y unificar color como hex válido o enum traducido. Separar claramente seed demo y listas de bienvenida de usuarios reales.",
+    "criterio": "Una edición tiene efecto visible; todos los colores aceptados se representan y se pueden editar; documentación explica qué datos verá el usuario.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/ListaCard/ListaCard.jsx",
+        "linea": 10
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/ListaForm.jsx",
+        "linea": 32
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/EncabezadoDetalleLista/EncabezadoDetalleLista.jsx",
+        "linea": 9
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/scripts/seeders/listasSeeder.js",
+        "linea": 12
+      }
+    ]
+  },
+  {
+    "id": "OPS-01",
+    "prioridad": "P2",
+    "area": "Calidad",
+    "titulo": "El lint de frontend no se puede ejecutar",
+    "evidencia": "Comando real",
+    "detalle": "pnpm run lint termina con exit 2: ESLint 9.39.5 no encuentra eslint.config.*. El manifest declara script y dependencia, pero no configuración ni reglas React/Hooks. Backend lint sí pasa.",
+    "recomendacion": "Añadir configuración compatible con JSX, browser, React Hooks y archivos de configuración; definir alcance de fixtures y artefactos.",
+    "criterio": "lint frontend y backend corren en instalación limpia y CI; alertan errores de hooks relevantes.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/package.json",
+        "linea": 9
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/eslint.config.js",
+        "linea": 6
+      }
+    ],
+    "estado": "implementado y verificado localmente",
+    "seguimiento": "ITERACION-03.md"
+  },
+  {
+    "id": "OPS-02",
+    "prioridad": "P2",
+    "area": "Pruebas",
+    "titulo": "No existe una suite automatizada ni CI del proyecto",
+    "evidencia": "Inventario",
+    "detalle": "No hay scripts test, pruebas unitarias/integración/E2E ni workflows. Los archivos .http no son pruebas automatizadas con aserciones. Los probes agregados en esta auditoría son evidencia de diagnóstico, no reemplazan una suite de regresión.",
+    "recomendacion": "Empezar por aislamiento, validaciones, concurrencia, expiración/login y CRUD; ejecutar lint/build/tests en CI y conservar los casos de fallos de esta auditoría como regresiones.",
+    "criterio": "CI bloquea regresiones de los P1; pruebas sin Keycloak externo más un recorrido E2E con proveedor real controlado.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/package.json",
+        "linea": 8
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/package.json",
+        "linea": 6
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/pruebasListas.http",
+        "linea": 1
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/pruebasTareas.http",
+        "linea": 1
+      }
+    ],
+    "estado": "suites, E2E real y CI implementados; E2E local aprobado; ejecución remota pendiente",
+    "seguimiento": "ITERACION-04.md"
+  },
+  {
+    "id": "OPS-03",
+    "prioridad": "P2",
+    "area": "Documentación",
+    "titulo": "OpenAPI y README no describen el sistema autenticado completo",
+    "evidencia": "Código/documentación",
+    "detalle": "Swagger no declara securitySchemes/security para Bearer y no incluye /me ni endpoints admin; las operaciones no tienen esquemas completos de respuesta. README frontend cita realm/client dds-tareas mientras .env.example/setup usan proyecto-tareas. Los requests .http no incluyen Authorization; DESIGN.md mencionado no está en el árbol entregado.",
+    "recomendacion": "Actualizar contrato OpenAPI, ejemplos autenticados, variables, Node compatible con dependencias y recorrido de primer inicio; generar/verificar documentación en CI.",
+    "criterio": "Un colaborador arranca desde las instrucciones y ejecuta requests autenticados sin deducir configuración; Swagger permite Authorize y documenta 401/403.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/docs/swagger.js",
+        "linea": 4
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/routes/apiRoutes.js",
+        "linea": 12
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/routes/adminRoutes.js",
+        "linea": 11
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/README.md",
+        "linea": 27
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/pruebasListas.http",
+        "linea": 1
+      }
+    ]
+  },
+  {
+    "id": "OPS-04",
+    "prioridad": "P2",
+    "area": "Dependencias",
+    "titulo": "El grafo bloqueado contiene 21 avisos de seguridad",
+    "evidencia": "pnpm audit consultado el 2026-09-05",
+    "detalle": "Frontend: 11 avisos (5 altos, 6 moderados). Backend: 10 (7 altos, 3 moderados). Es conteo del scanner por proyecto; hay avisos compartidos y condiciones de explotación específicas. Predominan Vite/esbuild, lint y Swagger; React Router, qs y uuid también aparecen en dependencias de runtime.",
+    "recomendacion": "Actualizar de forma controlada locks/directas/transitivas, revisar avisos uno a uno y volver a ejecutar regresiones. No aplicar upgrades mayores/overrides ciegos. Analizar Swagger como runtime aunque figure en devDependencies.",
+    "criterio": "Cada aviso queda corregido o documentado con alcance y justificación verificable; nuevo audit y build/lint/tests registrados.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/pnpm-lock.yaml",
+        "linea": 1
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/pnpm-lock.yaml",
+        "linea": 1
+      }
+    ]
+  },
+  {
+    "id": "OPS-05",
+    "prioridad": "P3",
+    "area": "Configuración frontend",
+    "titulo": "Puerto de Vite flexible frente a redirect URI exacta",
+    "evidencia": "Código/configuración",
+    "detalle": "Vite fija port:5173 pero no strictPort. Si está ocupado puede elegir otro; REDIRECT_URI usa window.location.origin y el setup registra un origen exacto. El login y CORS dejan de coincidir. El build también incorpora URLs localhost cuando falta configuración de despliegue.",
+    "recomendacion": "Fallar claramente si el puerto esperado está ocupado y validar variables de build por entorno. Documentar fallback SPA y origen permitido del despliegue.",
+    "criterio": "Puerto ocupado produce diagnóstico, no un frontend con OAuth roto; build de despliegue no apunta accidentalmente a localhost.",
+    "referencias": [
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/vite.config.js",
+        "linea": 7
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/auth/oauth.js",
+        "linea": 10
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/repositories/axios.config.js",
+        "linea": 7
+      },
+      {
+        "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/scripts/setup-keycloak.sh",
+        "linea": 118
+      }
+    ]
+  }
+]

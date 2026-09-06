@@ -1,0 +1,20 @@
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: calc(var(--nav-height) + var(--space-xl)) var(--space-md) var(--space-xl);
+}
+
+@media (min-width: 768px) {
+  .main {
+    padding-left: var(--space-xl);
+    padding-right: var(--space-xl);
+  }
+}

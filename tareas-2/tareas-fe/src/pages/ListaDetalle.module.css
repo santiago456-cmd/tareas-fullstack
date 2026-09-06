@@ -1,0 +1,6 @@
+.cargando {
+  text-align: center;
+  color: var(--color-on-surface-variant);
+  padding: var(--space-xl) 0;
+  font-size: var(--fs-body-lg);
+}

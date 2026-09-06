@@ -1,0 +1,49 @@
+{
+  "name": "api-tareas",
+  "version": "1.0.0",
+  "description": "Base profesional inicial para una API de tareas con Express",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test --test-concurrency=1 tests/*.test.js",
+    "test:coverage": "node --test --experimental-test-coverage --test-concurrency=1 tests/*.test.js",
+    "backup-db": "node src/scripts/backupDb.js",
+    "normalizar-etiquetas": "node src/scripts/normalizarEtiquetas.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write",
+    "init-db": "node src/scripts/initDb.js",
+    "init-db:force": "node src/scripts/initDb.js --force",
+    "keycloak:up": "docker compose up -d",
+    "keycloak:down": "docker compose down",
+    "keycloak:setup": "bash scripts/setup-keycloak.sh",
+    "test:production": "node scripts/check-production.mjs"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "api",
+    "backend",
+    "tareas"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jose": "^6.2.3",
+    "sequelize": "^6.37.8",
+    "sqlite3": "^6.0.1",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.2.1",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.3"
+  }
+}

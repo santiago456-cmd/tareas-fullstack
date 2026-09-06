@@ -1,0 +1,53 @@
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  height: 44px;
+  padding: 0 var(--space-lg);
+  border-radius: var(--radius-default);
+  font-size: var(--fs-label-md);
+  font-weight: 700;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+  white-space: nowrap;
+}
+
+.boton:active {
+  transform: scale(0.97);
+}
+
+.boton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: var(--shadow-sm);
+}
+.primary:hover:not(:disabled) {
+  background-color: var(--color-primary-container);
+}
+
+.secondary {
+  background-color: transparent;
+  color: var(--color-on-surface-variant);
+  border-color: var(--color-outline-variant);
+}
+.secondary:hover:not(:disabled) {
+  background-color: var(--color-surface-container-high);
+}
+
+.ghost {
+  background-color: transparent;
+  color: var(--color-primary);
+  height: auto;
+  padding: var(--space-xs) var(--space-md);
+}
+.ghost:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}

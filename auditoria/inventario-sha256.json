@@ -1,0 +1,454 @@
+[
+  {
+    "archivo": "tareas-2/tareas-back-main/.env.example",
+    "sha256": "f95acc75b1ac11acdde862d5fd3870a86cb900860f01be6255b7f2b2e222722e"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/.gitignore",
+    "sha256": "99613a65a19212ad30d1d5ca321a000edb2a27cd45cbf6974241d4bb9b6d577c"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/.prettierrc",
+    "sha256": "5e843c5926eb32880b490d7d9b3fb6ad4cc4e15483843e5128ad8709a69a8469"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/README.md",
+    "sha256": "8a712b7182981345f3b01943dfe14ee95afd0b5b37fd1342fafe61f3189107cc"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/docker-compose.yml",
+    "sha256": "2b86a5babfdfa413da1a972b1dc69c871637f90efabbde98e3878b7bfc69f045"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/eslint.config.js",
+    "sha256": "558d12bf5b187dc9d1fd4f8019ce9d76ce71e61b3143137b2b63a4488ce48a08"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/package.json",
+    "sha256": "1cd8739346b7c417111050f2fa29f009bf087e3f80315e49e67b6480a6ab77b3"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/pnpm-lock.yaml",
+    "sha256": "8622921b1bb4957714d1b4f87b10322c1e1cb0b5a747a70de51297b55f466875"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/pnpm-workspace.yaml",
+    "sha256": "1e9a4f86b786f13915ae5bdbd285e216223f2c33d33c54712bbb913fa021096b"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/pruebasListas.http",
+    "sha256": "6d4ca1a3a7b7f614f8ac5f532e1bc8302377627a3c5062403d8fef3e88f0df93"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/pruebasTareas.http",
+    "sha256": "e21900d95acc6b59f86e97dcc9dd47a884058a15dbaa6c811a460bf27dbb057e"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/scripts/setup-keycloak.sh",
+    "sha256": "e7ffa51c64c0263bcc9990ebc8d894c3bf021c49c5076fd420d7667f142f1ee6"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/app.js",
+    "sha256": "eea5c011be4272f0e235710cc7d83362bb632720908c3b6c084ad3f6887a8256"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/config/database.js",
+    "sha256": "6fcadcdcac7307ffefbb28ef3fefc6b75691eda2582057703a1d175d6822d319"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/config/env.js",
+    "sha256": "d2b5584bf5eb9868239723f5ac2204b20d62dae709a236d125df1be4ae9a7f7b"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/controllers/TareasController.js",
+    "sha256": "4fb91810fe060fbc9e8b15ba65a1be0e8b4fd59448f1d8ff5285c85db74192fd"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/controllers/adminController.js",
+    "sha256": "92cdc39b0927d5e295f2fea8c368450870bd06c21154c03640c310b9cf5e417e"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/controllers/healthCheckController.js",
+    "sha256": "774632f7b55d3570c922602832114ba6e1238608b295246dba6608f40e0219b2"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/controllers/listasController.js",
+    "sha256": "2a2de3d100cb3beb1157ec2d00189abcf32b82a86b3a57bf435a1feb9e3476e6"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/docs/swagger.js",
+    "sha256": "e71e4088ad36d1cc65141ba177868cdde9fd59e009fef3663fc5300b4183bc3a"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/middlewares/apiAutenticada.js",
+    "sha256": "56a5f29211e8bdb3140e4a9e1b386e82aaefbda2e21fa1911f9e254b8337ea35"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/middlewares/authorization.js",
+    "sha256": "933baed0c57c4a50eb976cceb9d29882ac7b89757ef6dc58ff4c043cce94da0c"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/middlewares/corsMiddleware.js",
+    "sha256": "f62d4a9fb790c7c95876dc159c1b60e24fa2524119a3b78bb3d45451f8c170f2"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/middlewares/notFoundMiddleware.js",
+    "sha256": "247b79f2897c8b1f2a5b745f941b51503137ed2824527490ec1c95d322d0195b"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/middlewares/requestLogger.js",
+    "sha256": "9b677ff1f32ac3f988f7df325a52fb22b23a4be4f1f93059b6dd3c45a664a6f0"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/middlewares/resolverCuenta.js",
+    "sha256": "3969d2690a6600d0542f83a9b0c63a1143af9c82b48f850185d3c4c2a8fc6f43"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/middlewares/tokenExtractor.js",
+    "sha256": "dec77c23ff8420dae4abbefc322ea9614b2968ae53c2426403cac497d10779d9"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/middlewares/validateIdParam.js",
+    "sha256": "de7d74a234323ee44aa555111ab920dba41b9aaf230f7fa09048fba8f127330b"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/models/Cuenta.js",
+    "sha256": "21384607784ae8a87e64b0ba654f5d754f3a2c5613919abe6a94f51ae9f81205"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/models/associations.js",
+    "sha256": "7d91adabeaaf092d3075cf322364a180041c8c289d80809253180eca7e5d26a9"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/models/lista.js",
+    "sha256": "d4f3811984df6b693daebc722356b5a4f801764cc05dcf81f3bca79e21dcbfb1"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/models/tarea.js",
+    "sha256": "01571bd17aba37873c2dd71dd718a070183f2897a6050e3c61281bd14e6a3f3d"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/repositories/baseRepository.js",
+    "sha256": "6d7c4d1e834e4e086234690846bb2350b381fd6c65308a26d1c1be915c082b9f"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/repositories/listasRepository.js",
+    "sha256": "b7e02847752e5c0f2eb033ff76898261048208efa65016f38872949688dc1045"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/repositories/tareasRepository.js",
+    "sha256": "14677807304432c9673a9aed5ef93bb387d581b3849f67e91946268588559e76"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/routes/adminRoutes.js",
+    "sha256": "c86fe3a314cf42cde90204acdbd129241a133d8272c550fbbc0dfc74e71a1735"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/routes/apiRoutes.js",
+    "sha256": "095ed68ae0055f1cfce4494006ce135f8052b937cb0443c0e3ad221deb1441a7"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/routes/authRoutes.js",
+    "sha256": "6211abe78e4ac4b14699db14563b37e23fb7a8ae81459c6926b9f7997db8e164"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/routes/healthCheckRoutes.js",
+    "sha256": "a80a6f40bccd30e124102ea55813f77521d140a47858afc015b6ab0393d5783b"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/routes/listasRoutes.js",
+    "sha256": "a65b6b47703b57a7fc6f5a4b10d908cfda0e5747e7e74bcbbb3fd4e27dc913de"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/routes/tareasRoutes.js",
+    "sha256": "e71ac473f78d5409eae1d9ddc84d2bc3eaeb8eaf003417e2461b907d3a9bde12"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/scripts/initDb.js",
+    "sha256": "dd64e574ad4a18107e3b931b1801f7c36790a33ccebe763a443576d05d1cf76c"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/scripts/seeders/listasSeeder.js",
+    "sha256": "e830944ad3338cae15a4256b08f07b03a14ae76dd502598c160d552847cc9ac1"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/scripts/seeders/tareasSeeder.js",
+    "sha256": "1dc2b2f51d60a70c384a0b05db287bf444b3a14e02f376e72a4f7bd99f6cd9bf"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/services/CuentasService.js",
+    "sha256": "490492761340d16edeac13d2c789e7dd7c2d51436da71c3e2a64d91adddcb25f"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/services/TareasService.js",
+    "sha256": "16f1a3e20b14e47a4bd3e7b9467a1a6c97173cfa658b7a2b1e983081def7d994"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/services/healthCheckService.js",
+    "sha256": "8b702c94344b712b0196785d3557c1ac02ab272e9da567e178926e6cad571363"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/services/listasService.js",
+    "sha256": "324b649c7aa0956c2e897e014d72f94e16131efce9bbd444d193b9697b84e61a"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/services/oauthService.js",
+    "sha256": "11d62e64cc44db937fa863382485f55df005ffc136c985ef83018e2b518d5fa5"
+  },
+  {
+    "archivo": "tareas-2/tareas-back-main/src/utils/apiResponse.js",
+    "sha256": "09ddb346ff3d4b8c1f810f32259dcf209ed232db820d5d32c60ad874ceee8af1"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/.env.example",
+    "sha256": "335b620fcc60d95d2c46d83434e08f94c304cffb96bb349c4096edf8ff498b21"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/.gitignore",
+    "sha256": "300cc4584e49d5e6813fb85f7e5491313d28f64e0fb8d805af25f0e1902a4f82"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/README.md",
+    "sha256": "9a4c724f16668c861228f592961afdaad6ee68e9de3730e978d56c0a5f7f63fb"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/index.html",
+    "sha256": "60a8944c367e4f0ab3b0714ba2158d4fab99a71ba214c3b7ea01010f2f0ff750"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/package.json",
+    "sha256": "63ef31fc5260d2db6eadd1002ec3f8fa89f5633000a3e24cf88c93e8a4628098"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/pnpm-lock.yaml",
+    "sha256": "21c400c2c1d45a1779832bcd8ff7d8c798736049eb60cfda87513262411da74b"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/pnpm-workspace.yaml",
+    "sha256": "ac02d96368617c760f093cfe61fdec64b6244007ab3553e0d6621f706f54a353"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/App.jsx",
+    "sha256": "34a69c60a2aeef579891feebacdbc38b214d285af4fecf3c48b6f62db7babb6d"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/auth/oauth.js",
+    "sha256": "d2d308a1251414147134a90f987d6bc157810f31ca17e68cd716ad8241047738"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/BarraFiltros/BarraFiltros.jsx",
+    "sha256": "46793ba648edc2e585b321021a7732ffe63b597d8b545715bb35b4a68f1bddb4"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/BarraFiltros/BarraFiltros.module.css",
+    "sha256": "50a4c0457bbaae99fd04feab85bd2d7b4a02f3a060e4fd0e1e16e85175e9f1fb"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/Encabezado.jsx",
+    "sha256": "1fa26dd01a5fca56fc0b4012f4e0b1263c1583f1a3bc55b279f33be304300227"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/Encabezado.module.css",
+    "sha256": "a2eedb6fa934a6b25ac8787db5646aba1edeffc9bbd5c6679469dc603b02117d"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/EncabezadoDetalleLista/EncabezadoDetalleLista.jsx",
+    "sha256": "ac4b368f144bc724bac50429377dda5f97b7429b2c5bb14cb6ca121236ea3bdb"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/EncabezadoDetalleLista/EncabezadoDetalleLista.module.css",
+    "sha256": "eb64344cae86dbda71c9a5297909dd0901ef9d016310126d4e2edce4c0362d7d"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/EtiquetasInput/EtiquetasInput.jsx",
+    "sha256": "b8320af6c3eefca5b386b427465b0c7e04d031f17eeb00f371ce55e697f2d987"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/EtiquetasInput/EtiquetasInput.module.css",
+    "sha256": "3916ce08f6d8305d76c75a9e9c3b2d57aeee4e884496ad7ac8100d11087d473d"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/FormularioTarea/FormularioTarea.jsx",
+    "sha256": "3968a48f61716038a8ab22cf6c4f60037c68e96e663962ded9e16eadc3d9a0ec"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/FormularioTarea/FormularioTarea.module.css",
+    "sha256": "5e9b887902ca0849c3253be5f106f4ab88544816ae0d89619ec66c338fbb2ed3"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/ListaCard/ListaCard.jsx",
+    "sha256": "07fd600c4d01e407a7eb55b4cb198f7a29c570157410c52960483e5b6abb4b23"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/ListaCard/ListaCard.module.css",
+    "sha256": "52ea617108f3900dfc89190ec275f13d618fb9df0da90da724c54c23f38958cb"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/ListaTareas.jsx",
+    "sha256": "def67262f11497c2e036fdd0c384e52dc432238118f48556c4fb985aef1b0b8c"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/ListaTareas.module.css",
+    "sha256": "436524d612635e3ad3e1d46ce81da50222ddad4134497dea7dd04232d23577e3"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/NuevaListaForm/NuevaListaForm.jsx",
+    "sha256": "9c76d31116099a9b88f6e5dabe6954fa913a70c888546a1c9ee5b4cf82cfe6ec"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/NuevaListaForm/NuevaListaForm.module.css",
+    "sha256": "abb80b505863aff2ca72867995264ea9f59ea2811ac46fb9a05b2153a67aaf67"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/PanelResumenMetricas/PanelResumenMetricas.jsx",
+    "sha256": "200be9fc7928b0ec4d8060ee136f471618d0b38b3dd9df510b95884d79d54634"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/PanelResumenMetricas/PanelResumenMetricas.module.css",
+    "sha256": "dac672640ff8e2ce96e20625cc8f9d453b1d28071f4c35620702f3dce46d422e"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/RequiereAuth.jsx",
+    "sha256": "173a52da3db56bf4ed67cf1b13fd4689bba6f46a678c92d0d0fc85cf854db768"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/RequiereAuth.module.css",
+    "sha256": "16eae86a3767ce837be0a522654fe675aa332827e13a6d218cfba7f7db5b2bac"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/SelectorPrioridad/SelectorPrioridad.jsx",
+    "sha256": "cbb21f3102f779a0343b4ba6c2b8245a7c2ace771c0299f898683a302f76b5b5"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/SelectorPrioridad/SelectorPrioridad.module.css",
+    "sha256": "d205ad34024bafa13cc470b5b1e90c58baef9bf761f73572d2ed2ae6c17c374f"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/TarjetaTarea.jsx",
+    "sha256": "bef68737b6e4a08b9e38bcb26b449edb3ef82f70ff3c7af507a22644a1750de9"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/TarjetaTarea.module.css",
+    "sha256": "e29b5c789d8c43cd9a0a18c24c13fc12b02f5bdae9ce86d66c8e155a339e6b9a"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/TokenBar.jsx",
+    "sha256": "ddf31c8b6bad93def2fc160a05733bc0bd54c36cb72f902ed6fbc148f65e7d7e"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/TokenBar.module.css",
+    "sha256": "9b01ff15e11f9682e73ee669d40d87ad6f026b0e800dc76e64d659db4810bc35"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/ui/Badge/Badge.jsx",
+    "sha256": "78af5069efcb6ee1107650b9671c28d6199413197a40503628d2759cb30f0274"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/ui/Badge/Badge.module.css",
+    "sha256": "37e2beaf5106cc0a3d7b80432523c0685517b3476c0175ae5b567a5aa640655f"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/ui/Boton/Boton.jsx",
+    "sha256": "c3d6ae1aba77277b955dc71d5e531709355105f98b0b9c2fa63ea8c5f67aa260"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/ui/Boton/Boton.module.css",
+    "sha256": "8c5effe1329d1805d3a4f979e94487b57b9a6b93eb0320f542186a9e295f7701"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/ui/MetricCard/MetricCard.jsx",
+    "sha256": "8c77ceb6034cba95e903eb094af33047f834c325559d6b73b2719aea2de4ef3c"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/ui/MetricCard/MetricCard.module.css",
+    "sha256": "2e9ed70f601f629969d46a6b1a318986f85fe1eb4928c1653b79f72bdf1c0254"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/ui/Modal/Modal.jsx",
+    "sha256": "7529b2cf99a573cad554acbb1fa9fbce5cd9f8d2a470a8689d33fd1856a84119"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/components/ui/Modal/Modal.module.css",
+    "sha256": "4d4c4938e06a2b5cd258057df3275ad4ad6b27007ec4f289d4a18fea12ad1064"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/index.css",
+    "sha256": "93b4bebd41bc39b000365fbd560268f9ad576013c2ed94a6b40311b6b034ae4e"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/layouts/LayoutPrincipal.jsx",
+    "sha256": "c6f794350a9524d154e58317b9e4dd8b02bea4ef3bb158bfb18e96a3ff317fe8"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/layouts/LayoutPrincipal.module.css",
+    "sha256": "9747188961e80da3a17b1d236a3799951123deb9e335e429c696fe691c7988df"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/main.jsx",
+    "sha256": "3ebb6ed4f84fb02cdffc394ded78d1b581ec6d5638560768512989e9036c1508"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/pages/AuthCallback.jsx",
+    "sha256": "4bdedc2e01e3e19cbab50059fcbfe0d3d053a4a11049b7682bb485a734bcb088"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/pages/AuthCallback.module.css",
+    "sha256": "e7f5fd0c02d61c4ba9bee09bfd635cbb5a35c79ea59df1185f8e5a23aa9913ca"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/pages/ListaDetalle.jsx",
+    "sha256": "add7fcf0a27d560c33f7bb2e65478fa98447189dfec82e718a0a1d34c0b06e95"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/pages/ListaDetalle.module.css",
+    "sha256": "cfdf391dba477bda856fb7d133c75a095720f68148a402b5ab9328a70912346d"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/pages/ListaForm.jsx",
+    "sha256": "4aecd4e6d05ab3d881dcf29b08a5a303a9f3960168357b916b4820681855b48e"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/pages/Listas.jsx",
+    "sha256": "1168c6920fba693aa7be76931de8f960252cb6fee95a26faffc34accff8171f0"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/pages/Listas.module.css",
+    "sha256": "678cae18d9015d283c9612d16e7000a8ef676584b3eb6706f5e3dc8cb6c32dde"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/pages/TareaForm.jsx",
+    "sha256": "bead5474b3e6fb434dcd84f1f27d02f239b307f83abb1da1a02f35f0b9caec80"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/pages/Tareas.jsx",
+    "sha256": "3873d24162d270cb8b8ff4f08ea6759d4301b4e011edf72fc277fd20bbfc0803"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/pages/Tareas.module.css",
+    "sha256": "5050b1b6d864fc78757e52e6d8ea5184a0ff531f1317f747806feca95eba1d60"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/repositories/axios.config.js",
+    "sha256": "6b4d36c576cf0dc96eb554d55a97db389e31dd5bd8787459bafbea7c515ad173"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/repositories/errores.js",
+    "sha256": "c5180ead1f8b008326f4e1e8ab268712304b16d4aeae288e075d957cb2ee1466"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/repositories/listas.repository.js",
+    "sha256": "09f7415b2d3ba6476c2b3acedcd618ec3ea1c2ba0255b8b2f77f613f57b041ae"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/repositories/tareas.repository.js",
+    "sha256": "b99fd67931be41a32aef5e05cf7c9bdae720b4f2cf7d252ff6658f18e511a775"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/src/styles/tokens.css",
+    "sha256": "fbeef0c0ae8938f75088b8842aa218ea0847c572a6d946cf30a600b8bd4ff5b8"
+  },
+  {
+    "archivo": "tareas-2/tareas-fe/vite.config.js",
+    "sha256": "30b4478fc2119bab62cd0b31692ec5962b79a5ff3ac673444531350c25a6eb18"
+  }
+]

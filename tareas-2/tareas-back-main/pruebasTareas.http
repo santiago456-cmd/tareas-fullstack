@@ -1,0 +1,52 @@
+### Listar todas las tareas
+GET http://localhost:3000/api/tareas
+Accept: application/json
+
+### Filtrar tareas pendientes
+GET http://localhost:3000/api/tareas?completada=false
+Accept: application/json
+
+### Filtrar tareas por prioridad
+GET http://localhost:3000/api/tareas?prioridad=alta
+Accept: application/json
+
+### Obtener tarea por id
+GET http://localhost:3000/api/tareas/1
+Accept: application/json
+
+### Probar id invalido
+GET http://localhost:3000/api/tareas/abc
+Accept: application/json
+
+### Crear tarea
+POST http://localhost:3000/api/tareas
+Content-Type: application/json
+
+{
+ "titulo": "Probar middlewares",
+ "descripcion": "Validar logger, id y 404",
+ "prioridad": "alta",
+ "fechaVencimiento": "2026-05-20",
+ "etiquetas": ["express", "backend"],
+ "listaId": 1
+}
+
+### Actualizar tarea
+PATCH http://localhost:3000/api/tareas/1
+Content-Type: application/json
+
+{
+ "prioridad": "media"
+}
+
+### Completar tarea
+PATCH http://localhost:3000/api/tareas/1/completar
+Accept: application/json
+
+### Eliminar tarea
+DELETE http://localhost:3000/api/tareas/1
+Accept: application/json
+
+### Probar ruta inexistente
+GET http://localhost:3000/api/no-existe
+Accept: application/json

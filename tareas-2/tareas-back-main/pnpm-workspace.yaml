@@ -1,0 +1,3 @@
+allowBuilds:
+  '@scarf/scarf': true
+  sqlite3: true

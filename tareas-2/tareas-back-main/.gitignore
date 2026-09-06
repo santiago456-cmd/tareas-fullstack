@@ -1,0 +1,30 @@
+# Evita subir dependencias, variables de entorno y archivos generados automáticamente.
+
+# Dependencias
+node_modules/
+package-lock.json
+
+# Variables de entorno (credenciales, claves, configs locales)
+.env
+
+# Logs
+*.log
+logs/
+
+# Build / dist
+dist/
+build/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Base de datos
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+*.db
+*.db-wal
+*.db-shm
+coverage/

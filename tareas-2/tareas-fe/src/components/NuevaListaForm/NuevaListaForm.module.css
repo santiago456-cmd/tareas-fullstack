@@ -1,0 +1,51 @@
+.form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-md);
+  padding: var(--space-xs);
+  box-shadow: var(--shadow-sm);
+}
+
+.input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: var(--fs-body-md);
+  font-family: var(--font-family-base);
+  color: var(--color-on-surface);
+  width: 100%;
+  padding: var(--space-xs) var(--space-sm);
+}
+
+@media (min-width: 768px) {
+  .input {
+    width: 288px;
+  }
+}
+
+.boton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+  border: none;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-default);
+  font-size: var(--fs-label-md);
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.boton:hover {
+  background-color: var(--color-primary-container);
+}
+
+.boton:active {
+  transform: scale(0.96);
+}

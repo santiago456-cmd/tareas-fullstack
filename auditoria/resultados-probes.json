@@ -1,0 +1,217 @@
+[
+  {
+    "name": "Aislamiento entre cuentas",
+    "evidence": {
+      "readList": null,
+      "readTask": null,
+      "updateList": 404,
+      "deleteList": 404,
+      "updateTask": 404,
+      "completeTask": 404,
+      "deleteTask": 404,
+      "createTaskForeignList": 404,
+      "collection": 0
+    }
+  },
+  {
+    "name": "Eliminar lista pendiente",
+    "evidence": 409
+  },
+  {
+    "name": "Completar y repetir",
+    "evidence": [
+      200,
+      409
+    ]
+  },
+  {
+    "name": "nombre numérico",
+    "evidence": {
+      "status": 500,
+      "body": {
+        "success": false,
+        "message": "Error al crear la lista",
+        "data": null,
+        "meta": null,
+        "error": {
+          "code": "LISTA_CREATE_ERROR",
+          "details": {
+            "error": "datos?.nombre?.trim is not a function"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "titulo numérico",
+    "evidence": {
+      "status": 500,
+      "body": {
+        "success": false,
+        "message": "Error al crear la tarea",
+        "data": null,
+        "meta": null,
+        "error": {
+          "code": "TAREA_CREATE_ERROR",
+          "details": {
+            "error": "datos?.titulo?.trim is not a function"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "PATCH nombre null",
+    "evidence": {
+      "status": 500,
+      "body": {
+        "success": false,
+        "message": "Error al actualizar la lista",
+        "data": null,
+        "meta": null,
+        "error": {
+          "code": "LISTA_UPDATE_ERROR",
+          "details": {
+            "error": "Cannot read properties of null (reading 'trim')"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "PATCH sin body",
+    "evidence": {
+      "status": 500,
+      "body": {
+        "success": false,
+        "message": "Error al actualizar la tarea",
+        "data": null,
+        "meta": null,
+        "error": {
+          "code": "TAREA_UPDATE_ERROR",
+          "details": {
+            "error": "Cannot read properties of undefined (reading 'titulo')"
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "Etiquetas string aceptadas",
+    "evidence": {
+      "status": 201,
+      "stored": "texto"
+    }
+  },
+  {
+    "name": "Límites de lista no aplicados",
+    "evidence": {
+      "status": 201,
+      "descriptionLength": 251,
+      "colorLength": 31
+    }
+  },
+  {
+    "name": "Límite descripción tarea no aplicado",
+    "evidence": {
+      "status": 201,
+      "length": 501
+    }
+  },
+  {
+    "name": "Alta concurrente de cuenta",
+    "evidence": [
+      {
+        "status": "fulfilled"
+      },
+      {
+        "status": "rejected",
+        "error": "SequelizeUniqueConstraintError"
+      }
+    ]
+  },
+  {
+    "name": "Alta parcial persiste sin reparación",
+    "evidence": {
+      "cuentaExiste": true,
+      "listas": 0
+    }
+  },
+  {
+    "name": "Borrado no atómico con fallo inyectado",
+    "evidence": {
+      "listaExiste": true,
+      "tareasRestantes": 0
+    }
+  },
+  {
+    "name": "Consultas N+1",
+    "evidence": {
+      "listas": 3,
+      "consultas": 4
+    }
+  },
+  {
+    "name": "Índices tareas",
+    "evidence": []
+  },
+  {
+    "name": "FK tareas",
+    "evidence": [
+      {
+        "id": 0,
+        "seq": 0,
+        "table": "LISTAS",
+        "from": "ID_LISTA",
+        "to": "ID_LISTA",
+        "on_update": "CASCADE",
+        "on_delete": "NO ACTION",
+        "match": "NONE"
+      }
+    ]
+  },
+  {
+    "name": "Crear pendiente entre conteo y borrado",
+    "evidence": {
+      "result": {
+        "error": "SequelizeForeignKeyConstraintError"
+      },
+      "pendienteExiste": true
+    }
+  },
+  {
+    "name": "Lista duplicada concurrente",
+    "evidence": [
+      {
+        "status": "fulfilled",
+        "http": 201
+      },
+      {
+        "status": "rejected",
+        "error": "SequelizeUniqueConstraintError"
+      }
+    ]
+  },
+  {
+    "name": "Health-check con DB caída",
+    "evidence": {
+      "http": 200,
+      "success": true,
+      "status": "DEGRADED"
+    }
+  },
+  {
+    "name": "UI autenticada con token inválido",
+    "evidence": true
+  },
+  {
+    "name": "Callback concurrente, proveedor simulado de un solo uso",
+    "evidence": {
+      "tokenRequests": 2,
+      "results": [
+        "fulfilled",
+        "rejected"
+      ]
+    }
+  }
+]

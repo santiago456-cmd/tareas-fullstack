@@ -1,0 +1,53 @@
+.contenedor {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.ingresar {
+  padding: 6px var(--space-md);
+  border-radius: var(--radius-full);
+  border: none;
+  background-color: color-mix(in srgb, var(--color-primary) 6%, transparent);
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: var(--fs-label-md);
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.ingresar:hover {
+  background-color: color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+.ingresar:active {
+  transform: scale(0.96);
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary-fixed);
+  color: var(--color-primary);
+  font-size: var(--fs-label-md);
+  font-weight: 700;
+  border: 2px solid var(--color-primary-fixed-dim);
+}
+
+.salir {
+  border: none;
+  background: transparent;
+  color: var(--color-on-surface-variant);
+  font-size: var(--fs-label-md);
+  font-weight: 500;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.salir:hover {
+  color: var(--color-primary);
+}

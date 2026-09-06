@@ -1,0 +1,41 @@
+.card {
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.etiqueta {
+  margin: 0 0 var(--space-xs) 0;
+  font-size: var(--fs-label-md);
+  font-weight: var(--fw-label-md);
+  color: var(--color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.fila {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.valor {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-on-surface);
+}
+
+.icono {
+  font-size: 20px;
+  padding: var(--space-xs);
+  border-radius: var(--radius-default);
+}
+
+.icono.neutral { color: var(--color-on-surface-variant); background: var(--color-surface-container); }
+.icono.primary { color: var(--color-primary); background: color-mix(in srgb, var(--color-primary) 10%, transparent); }
+.icono.success { color: var(--color-secondary); background: color-mix(in srgb, var(--color-secondary) 10%, transparent); }
+.icono.warning { color: var(--color-tertiary-container); background: color-mix(in srgb, var(--color-tertiary-container) 10%, transparent); }
+.icono.danger  { color: var(--color-error); background: color-mix(in srgb, var(--color-error) 10%, transparent); }

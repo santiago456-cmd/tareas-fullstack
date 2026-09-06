@@ -1,0 +1,87 @@
+{
+  "realm": "tareas-e2e",
+  "enabled": true,
+  "sslRequired": "none",
+  "accessTokenLifespan": 40,
+  "ssoSessionIdleTimeout": 300,
+  "ssoSessionMaxLifespan": 600,
+  "roles": {
+    "realm": [
+      {
+        "name": "usuario"
+      },
+      {
+        "name": "admin"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "tareas-e2e-spa",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": [
+        "http://127.0.0.1:15173/auth/callback"
+      ],
+      "webOrigins": [
+        "http://127.0.0.1:15173"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://127.0.0.1:15173"
+      },
+      "protocolMappers": [
+        {
+          "name": "tareas-api-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "tareas-api",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "alice",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "alice",
+      "lastName": "E2E",
+      "email": "alice@example.test",
+      "realmRoles": [
+        "usuario"
+      ],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "e2e-only-user-password",
+          "temporary": false
+        }
+      ]
+    },
+    {
+      "username": "bob",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "bob",
+      "lastName": "E2E",
+      "email": "bob@example.test",
+      "realmRoles": [
+        "usuario"
+      ],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "e2e-only-user-password",
+          "temporary": false
+        }
+      ]
+    }
+  ]
+}

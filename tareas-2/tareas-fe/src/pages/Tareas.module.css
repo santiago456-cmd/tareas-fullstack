@@ -1,0 +1,23 @@
+.header {
+  margin-bottom: var(--space-lg);
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--fs-headline-lg);
+  font-weight: var(--fw-headline-lg);
+  color: var(--color-on-surface);
+}
+
+.subtitulo {
+  margin: var(--space-xs) 0 0;
+  color: var(--color-on-surface-variant);
+  font-size: var(--fs-body-md);
+}
+
+.cargando {
+  text-align: center;
+  color: var(--color-on-surface-variant);
+  padding: var(--space-xl) 0;
+  font-size: var(--fs-body-lg);
+}

@@ -1,0 +1,12 @@
+# Fixture efímera para tests: credenciales ficticias, loopback y sin volumen persistente.
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.5.0
+    command: start-dev --import-realm
+    ports:
+      - '127.0.0.1:18081:8080'
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: e2e-admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: e2e-only-admin-password
+    volumes:
+      - ./realm.json:/opt/keycloak/data/import/realm.json:ro

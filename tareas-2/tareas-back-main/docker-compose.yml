@@ -1,0 +1,16 @@
+# Entorno local de desarrollo; no utilizar start-dev para producción.
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.5.0
+    container_name: keycloak-proyecto-tareas
+    command: start-dev
+    ports:
+      - '127.0.0.1:8081:8080'
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?Defina KEYCLOAK_ADMIN_PASSWORD en .env}
+    volumes:
+      - proyecto_tareas_keycloak_data:/opt/keycloak/data
+
+volumes:
+  proyecto_tareas_keycloak_data:

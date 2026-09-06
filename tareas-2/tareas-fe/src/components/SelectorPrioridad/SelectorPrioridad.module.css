@@ -1,0 +1,49 @@
+.grupo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-label-md);
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.chip:active {
+  transform: scale(0.96);
+}
+
+.chip .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.success {
+  background-color: color-mix(in srgb, var(--color-secondary) 10%, transparent);
+  color: var(--color-secondary);
+  border-color: color-mix(in srgb, var(--color-secondary) 20%, transparent);
+}
+
+.warning {
+  background-color: color-mix(in srgb, var(--color-tertiary-container) 12%, transparent);
+  color: var(--color-tertiary-container);
+  border-color: color-mix(in srgb, var(--color-tertiary-container) 25%, transparent);
+}
+
+.danger {
+  background-color: color-mix(in srgb, var(--color-error) 10%, transparent);
+  color: var(--color-error);
+  border-color: color-mix(in srgb, var(--color-error) 20%, transparent);
+}
+
+.activo {
+  box-shadow: 0 0 0 2px currentColor;
+}
