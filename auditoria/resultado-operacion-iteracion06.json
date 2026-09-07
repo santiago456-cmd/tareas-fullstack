@@ -22,6 +22,26 @@
   "integration": {
     "branch": "codex/ops-02-e2e",
     "method": "fast-forward",
-    "remote_publication": "pending"
+    "remote_publication": "verified",
+    "commit": "ad80c11c8458c95ce0b4cbdf730f29f3ab4cf432",
+    "ci_url": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34050001364",
+    "ci_conclusion": "success",
+    "jobs": [
+      {
+        "name": "e2e",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "verificar (tareas-back-main)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "verificar (tareas-fe)",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
   }
 }

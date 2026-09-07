@@ -1,0 +1,22 @@
+{
+  "commit": "ccd1cc3eba01c721c5d5616cb3e3fc0eac5926aa",
+  "url": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "e2e",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "verificar (tareas-back-main)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "verificar (tareas-fe)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ]
+}

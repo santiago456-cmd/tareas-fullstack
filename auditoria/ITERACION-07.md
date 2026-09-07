@@ -26,3 +26,7 @@ Todos los módulos de `src/` migrados a TS/TSX. DTO de listas, tareas, formulari
 TypeScript, ESLint, build y 26 pruebas de frontend aprobados. Incluye simulaciones de error/reintento, respuesta A posterior a B, doble envío, retorno directo y mutación resuelta después de desmontar. Los tres recorridos E2E se verificaron con Keycloak real: login/CRUD/SSO/logout, renovación/revocación y móvil/teclado. La prueba de foco detectó y permitió corregir el salto de Tab a la barra del navegador; otra ejecución detectó una carrera del indicador de cambios al pulsar Escape inmediatamente tras cambiar prioridad. Tras corregir esta última, se repitieron tipos, lint, build, 26 pruebas unitarias y el recorrido móvil dirigido, que aprobó en 7,5 segundos. La captura final se revisó visualmente y se adjunta al reporte Playwright. Contenedores y redes temporales eliminados. Las comprobaciones visuales usan Chromium; no se afirma validación manual con lector de pantalla ni teclado virtual de un dispositivo físico.
 
 No se modifican la base operativa ni las migraciones del backend. La publicación, CI remota e integración de esta rama se registrarán por separado.
+
+## Cierre de CI
+
+[GitHub Actions 34073227911](https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911) aprobó backend, frontend y E2E sobre `ccd1cc3eba01c721c5d5616cb3e3fc0eac5926aa`. Evidencia: `resultado-ci-iteracion07.json`. La rama está publicada; queda pendiente integrar a la rama principal.

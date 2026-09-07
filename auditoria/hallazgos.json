@@ -583,8 +583,9 @@
         "linea": 55
       }
     ],
-    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
-    "seguimiento": "ITERACION-07.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración a rama principal pendiente",
+    "seguimiento": "ITERACION-07.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911"
   },
   {
     "id": "FE-05",
@@ -605,8 +606,9 @@
         "linea": 19
       }
     ],
-    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
-    "seguimiento": "ITERACION-07.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración a rama principal pendiente",
+    "seguimiento": "ITERACION-07.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911"
   },
   {
     "id": "FE-06",
@@ -623,8 +625,9 @@
         "linea": 7
       }
     ],
-    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
-    "seguimiento": "ITERACION-07.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración a rama principal pendiente",
+    "seguimiento": "ITERACION-07.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911"
   },
   {
     "id": "FE-07",
@@ -645,8 +648,9 @@
         "linea": 44
       }
     ],
-    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
-    "seguimiento": "ITERACION-07.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración a rama principal pendiente",
+    "seguimiento": "ITERACION-07.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911"
   },
   {
     "id": "FE-08",
@@ -679,8 +683,9 @@
         "linea": 85
       }
     ],
-    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
-    "seguimiento": "ITERACION-07.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración a rama principal pendiente",
+    "seguimiento": "ITERACION-07.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911"
   },
   {
     "id": "FE-09",
@@ -709,8 +714,9 @@
         "linea": 52
       }
     ],
-    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
-    "seguimiento": "ITERACION-07.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración a rama principal pendiente",
+    "seguimiento": "ITERACION-07.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911"
   },
   {
     "id": "FE-10",
@@ -743,8 +749,9 @@
         "linea": 23
       }
     ],
-    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
-    "seguimiento": "ITERACION-07.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración a rama principal pendiente",
+    "seguimiento": "ITERACION-07.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911"
   },
   {
     "id": "FE-11",
@@ -773,8 +780,9 @@
         "linea": 25
       }
     ],
-    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
-    "seguimiento": "ITERACION-07.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración a rama principal pendiente",
+    "seguimiento": "ITERACION-07.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911"
   },
   {
     "id": "FE-12",
@@ -799,8 +807,9 @@
         "linea": 62
       }
     ],
-    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
-    "seguimiento": "ITERACION-07.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración a rama principal pendiente",
+    "seguimiento": "ITERACION-07.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911"
   },
   {
     "id": "FE-13",
@@ -821,8 +830,9 @@
         "linea": 30
       }
     ],
-    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
-    "seguimiento": "ITERACION-07.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración a rama principal pendiente",
+    "seguimiento": "ITERACION-07.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911"
   },
   {
     "id": "FE-14",
@@ -847,8 +857,9 @@
         "linea": 31
       }
     ],
-    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
-    "seguimiento": "ITERACION-07.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración a rama principal pendiente",
+    "seguimiento": "ITERACION-07.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911"
   },
   {
     "id": "FE-15",
@@ -877,8 +888,9 @@
         "linea": 12
       }
     ],
-    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
-    "seguimiento": "ITERACION-07.md"
+    "estado": "implementado; pruebas locales y GitHub Actions aprobados; integración a rama principal pendiente",
+    "seguimiento": "ITERACION-07.md",
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34073227911"
   },
   {
     "id": "OPS-01",
