@@ -7,7 +7,9 @@
   border-radius: var(--radius-lg);
   padding: var(--space-md);
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .card:hover {
@@ -15,7 +17,8 @@
   transform: translateY(-2px);
 }
 
-.card:hover .acciones {
+.card:hover .acciones,
+.card:focus-within .acciones {
   opacity: 1;
 }
 
@@ -81,4 +84,10 @@
   font-weight: var(--fw-label-sm);
   padding: 2px 10px;
   border-radius: var(--radius-full);
+}
+
+@media (hover: none) {
+  .acciones {
+    opacity: 1;
+  }
 }

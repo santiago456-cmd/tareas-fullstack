@@ -104,6 +104,7 @@ try {
       "test",
       "--config",
       "tareas-2/tareas-fe/playwright.config.js",
+      ...process.argv.slice(2),
     ],
     env,
   );

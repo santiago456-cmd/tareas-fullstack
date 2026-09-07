@@ -34,7 +34,7 @@
 }
 
 .links {
-  display: none;
+  display: flex;
   align-items: center;
   gap: var(--space-xs);
 }
@@ -51,7 +51,9 @@
   font-size: var(--fs-body-md);
   color: var(--color-on-surface-variant);
   text-decoration: none;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .link:hover {
@@ -62,4 +64,22 @@
   background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
   color: var(--color-primary);
   font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .contenido {
+    padding: 0 8px;
+    gap: 8px;
+  }
+  .izquierda {
+    gap: 8px;
+  }
+  .marca {
+    font-size: 14px;
+    max-width: 80px;
+  }
+  .link {
+    padding: 6px;
+    font-size: 14px;
+  }
 }

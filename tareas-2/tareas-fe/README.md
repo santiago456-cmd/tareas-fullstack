@@ -117,3 +117,25 @@ Vitest y Testing Library cubren etiquetas históricas inválidas, límites y edi
 ## E2E
 
 `pnpm run test:e2e` ejecuta Playwright con Keycloak real, frontend y API aislados. Preparación, puertos y limpieza: [guía E2E](../../e2e/README.md).
+
+## TypeScript estricto y correcciones de interfaz
+
+Todo `src/` usa TypeScript/TSX. `tsconfig.json` activa `strict` y `noUncheckedIndexedAccess`, con resolución Bundler y JSX automático. Los DTO HTTP usan fechas serializadas como strings, prioridad cerrada y etiquetas tipadas; los errores externos se estrechan desde `unknown`. Vite sigue transpiliendo durante desarrollo: ejecutar `pnpm run typecheck` o `pnpm exec tsc --watch` para ver los errores de tipos.
+
+- `pnpm run typecheck`: comprueba código y casos negativos de contratos en `tests/types`.
+- `pnpm run build`: comprueba tipos antes de generar `dist/`.
+- `pnpm test`: pruebas de React/Vitest, incluyendo carreras entre cargas, errores y dobles envíos.
+- `pnpm run lint`: ESLint para JS, TS y TSX.
+- `pnpm run test:e2e`: Keycloak/API/Chromium aislados, incluyendo un recorrido móvil y de teclado.
+
+GitHub Actions comprueba tipos en ambos proyectos. Los tests y archivos de herramientas que siguen en JavaScript consumen los módulos TypeScript mediante Vite/Vitest; la aplicación no conserva módulos JavaScript en `src/`.
+
+Los diálogos usan `<dialog>` nativo: fondo inerte, foco confinado, Escape, título accesible y desplazamiento interno. Guardar/Cancelar se mantienen fuera del área desplazable. Descartar cambios pide confirmación; durante un guardado no se permite cerrar. La navegación de Listas/Tareas permanece disponible en móvil. Se usan radios nativos y errores asociados a sus campos.
+
+Las cargas distinguen error, espera y colección vacía, ofrecen reintento y descartan respuestas de rutas anteriores. Las mutaciones bloquean envíos concurrentes por formulario o tarjeta. Una edición de tarea abierta directamente vuelve a su lista y usa `/tareas` como alternativa segura. Esto no reemplaza la idempotencia del servidor ante reintentos externos o cortes de red.
+
+Las descripciones se muestran en tarjetas y detalle. Los colores históricos en español (gris, azul, violeta, verde, naranja, rojo, amarillo, blanco, negro) se traducen a hexadecimal; colores CSS válidos se conservan, valores históricos sin representación usan el color predeterminado. Editar permite vaciar el color o introducir un valor CSS válido sin convertirlo silenciosamente a negro. Las listas de `seed-demo` pertenecen al usuario sintético del seeder; no son las listas de bienvenida creadas para un usuario real de Keycloak.
+
+La paginación del API se conserva: las vistas actuales recorren sus páginas para calcular filtros y métricas locales. La navegación visual por páginas sigue pendiente de una iteración de producto.
+
+Para repetir solo el recorrido móvil: `pnpm run test:e2e --grep 'frontend móvil'`. El runner reenvía los argumentos a Playwright y conserva el aislamiento y la limpieza del entorno.

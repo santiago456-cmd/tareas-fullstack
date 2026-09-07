@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios'
 import { beforeEach, expect, test, vi } from 'vitest'
 import { act, render, screen } from '@testing-library/react'
 import { StrictMode } from 'react'
@@ -121,7 +122,12 @@ test('Axios bloquea peticiones sin sesión y no reintenta POST con 401', async (
   kc.authenticated = true
   kc.token = 'current'
   adapter.mockImplementation(async (config) => {
-    throw { response: { status: 401 }, config }
+    throw new AxiosError('Unauthorized', 'ERR_BAD_REQUEST', config, undefined, {
+      status: 401,
+      data: {},
+      headers: {},
+      config,
+    })
   })
   await expect(api.post('/listas', {}, { adapter })).rejects.toBeTruthy()
   expect(adapter).toHaveBeenCalledTimes(1)

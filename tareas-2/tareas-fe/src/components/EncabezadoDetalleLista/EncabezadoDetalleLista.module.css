@@ -19,7 +19,7 @@
   text-decoration: underline;
 }
 
-.volver .material-symbols-outlined {
+.volver :global(.material-symbols-outlined) {
   font-size: 18px;
 }
 

@@ -27,7 +27,7 @@
   border-color: var(--color-primary);
 }
 
-.filtro .material-symbols-outlined {
+.filtro :global(.material-symbols-outlined) {
   font-size: 18px;
   color: var(--color-on-surface-variant);
 }
@@ -60,14 +60,20 @@
   border-radius: var(--radius-default);
   font-size: var(--fs-label-md);
   cursor: pointer;
-  transition: color 0.15s ease, background-color 0.15s ease;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .limpiar:hover {
   color: var(--color-error);
-  background-color: color-mix(in srgb, var(--color-error-container) 20%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-error-container) 20%,
+    transparent
+  );
 }
 
-.limpiar .material-symbols-outlined {
+.limpiar :global(.material-symbols-outlined) {
   font-size: 18px;
 }

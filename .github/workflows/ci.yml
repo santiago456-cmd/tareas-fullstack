@@ -25,8 +25,7 @@ jobs:
         with:
           version: '11.13.0'
       - run: pnpm install --frozen-lockfile
-      - if: matrix.proyecto == 'tareas-back-main'
-        run: pnpm run typecheck
+      - run: pnpm run typecheck
       - run: pnpm test
       - run: pnpm run lint
       - if: matrix.proyecto == 'tareas-fe'

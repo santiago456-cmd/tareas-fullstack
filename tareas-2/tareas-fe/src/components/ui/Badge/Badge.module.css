@@ -10,7 +10,7 @@
   white-space: nowrap;
 }
 
-.badge .material-symbols-outlined {
+.badge :global(.material-symbols-outlined) {
   font-size: 14px;
 }
 
@@ -30,7 +30,11 @@
 }
 
 .warning {
-  background-color: color-mix(in srgb, var(--color-tertiary-container) 15%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-tertiary-container) 15%,
+    transparent
+  );
   color: var(--color-tertiary-container);
 }
 

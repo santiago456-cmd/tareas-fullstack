@@ -55,7 +55,9 @@ it('un título demasiado corto no dispara la creación', async () => {
       </Routes>
     </MemoryRouter>,
   )
-  fireEvent.change(screen.getByLabelText('Título'), { target: { value: 'ab' } })
+  fireEvent.change(await screen.findByLabelText('Título'), {
+    target: { value: 'ab' },
+  })
   fireEvent.click(screen.getByRole('button', { name: 'Guardar' }))
   expect(await screen.findByText('Mínimo 3 caracteres')).toBeTruthy()
   expect(repository.crearTarea).not.toHaveBeenCalled()

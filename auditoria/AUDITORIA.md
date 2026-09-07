@@ -1,3 +1,5 @@
+Seguimiento TypeScript frontend y FE-04 a FE-15: [Iteración 07](ITERACION-07.md).
+
 Seguimiento BE-09, BE-10, BE-12 y BE-14: [Iteración 06](ITERACION-06.md).
 
 > Migración del backend a TypeScript: [Iteración 05](ITERACION-05.md).

@@ -39,7 +39,9 @@
   font-size: var(--fs-label-md);
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.15s ease, background-color 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .boton:hover {
@@ -48,4 +50,11 @@
 
 .boton:active {
   transform: scale(0.96);
+}
+
+.form {
+  flex-wrap: wrap;
+}
+.form [role='alert'] {
+  flex-basis: 100%;
 }

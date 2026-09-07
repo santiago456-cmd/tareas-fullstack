@@ -336,9 +336,9 @@
         "linea": 10
       }
     ],
-    "estado": "implementado; CI aprobada, integrado localmente y aplicado a desarrollo; publicación de rama principal pendiente",
+    "estado": "completado: integrado y publicado en rama principal, CI aprobada y aplicado a desarrollo",
     "seguimiento": "ITERACION-06.md",
-    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500"
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34050001364"
   },
   {
     "id": "BE-10",
@@ -371,9 +371,9 @@
         "linea": 5
       }
     ],
-    "estado": "implementado; CI aprobada, integrado localmente y aplicado a desarrollo; publicación de rama principal pendiente",
+    "estado": "completado: integrado y publicado en rama principal, CI aprobada y aplicado a desarrollo",
     "seguimiento": "ITERACION-06.md",
-    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500"
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34050001364"
   },
   {
     "id": "BE-11",
@@ -416,9 +416,9 @@
         "linea": 120
       }
     ],
-    "estado": "implementado; CI aprobada, integrado localmente y aplicado a desarrollo; publicación de rama principal pendiente",
+    "estado": "completado: integrado y publicado en rama principal, CI aprobada y aplicado a desarrollo",
     "seguimiento": "ITERACION-06.md",
-    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500"
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34050001364"
   },
   {
     "id": "BE-13",
@@ -473,9 +473,9 @@
         "linea": 4
       }
     ],
-    "estado": "implementado; CI aprobada, integrado localmente y aplicado a desarrollo; publicación de rama principal pendiente",
+    "estado": "completado: integrado y publicado en rama principal, CI aprobada y aplicado a desarrollo",
     "seguimiento": "ITERACION-06.md",
-    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34049428500"
+    "ejecucion_ci": "https://github.com/santiago456-cmd/tareas-fullstack/actions/runs/34050001364"
   },
   {
     "id": "FE-01",
@@ -582,7 +582,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/FormularioTarea/FormularioTarea.module.css",
         "linea": 55
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
+    "seguimiento": "ITERACION-07.md"
   },
   {
     "id": "FE-05",
@@ -602,7 +604,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/Encabezado.jsx",
         "linea": 19
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
+    "seguimiento": "ITERACION-07.md"
   },
   {
     "id": "FE-06",
@@ -618,7 +622,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/ui/Modal/Modal.jsx",
         "linea": 7
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
+    "seguimiento": "ITERACION-07.md"
   },
   {
     "id": "FE-07",
@@ -638,7 +644,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/ListaCard/ListaCard.module.css",
         "linea": 44
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
+    "seguimiento": "ITERACION-07.md"
   },
   {
     "id": "FE-08",
@@ -670,7 +678,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/TarjetaTarea.jsx",
         "linea": 85
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
+    "seguimiento": "ITERACION-07.md"
   },
   {
     "id": "FE-09",
@@ -698,7 +708,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/Tareas.jsx",
         "linea": 52
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
+    "seguimiento": "ITERACION-07.md"
   },
   {
     "id": "FE-10",
@@ -730,7 +742,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/ListaDetalle.jsx",
         "linea": 23
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
+    "seguimiento": "ITERACION-07.md"
   },
   {
     "id": "FE-11",
@@ -758,7 +772,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/FormularioTarea/FormularioTarea.jsx",
         "linea": 25
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
+    "seguimiento": "ITERACION-07.md"
   },
   {
     "id": "FE-12",
@@ -782,7 +798,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/TareaForm.jsx",
         "linea": 62
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
+    "seguimiento": "ITERACION-07.md"
   },
   {
     "id": "FE-13",
@@ -802,7 +820,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/pages/Listas.jsx",
         "linea": 30
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
+    "seguimiento": "ITERACION-07.md"
   },
   {
     "id": "FE-14",
@@ -826,7 +846,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-fe/src/components/BarraFiltros/BarraFiltros.module.css",
         "linea": 31
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
+    "seguimiento": "ITERACION-07.md"
   },
   {
     "id": "FE-15",
@@ -854,7 +876,9 @@
         "path": "/home/santiago/Documents/ChatGPT/tareas/tareas-2/tareas-back-main/src/scripts/seeders/listasSeeder.js",
         "linea": 12
       }
-    ]
+    ],
+    "estado": "implementado y verificado localmente; publicación, CI remota e integración pendientes",
+    "seguimiento": "ITERACION-07.md"
   },
   {
     "id": "OPS-01",

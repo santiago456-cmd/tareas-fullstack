@@ -8,12 +8,15 @@
   background-color: var(--color-surface-container-low);
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-default);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .contenedor:focus-within {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary) 20%, transparent);
 }
 
 .chip {
@@ -43,7 +46,7 @@
   background-color: color-mix(in srgb, var(--color-primary) 15%, transparent);
 }
 
-.quitar .material-symbols-outlined {
+.quitar :global(.material-symbols-outlined) {
   font-size: 14px;
 }
 

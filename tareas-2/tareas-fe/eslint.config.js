@@ -1,12 +1,22 @@
 import js from '@eslint/js'
+import tseslint from 'typescript-eslint'
 import globals from 'globals'
 import react from 'eslint-plugin-react'
 import hooks from 'eslint-plugin-react-hooks'
 
-export default [
-  { ignores: ['dist/**', 'node_modules/**', 'auditoria/**'] },
+export default tseslint.config(
   {
-    files: ['**/*.{js,jsx}'],
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'auditoria/**',
+      'playwright-report/**',
+      'test-results/**',
+    ],
+  },
+  ...tseslint.configs.recommended,
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -19,11 +29,15 @@ export default [
       ...js.configs.recommended.rules,
       ...hooks.configs.recommended.rules,
       'react/jsx-uses-vars': 'error',
-      'no-unused-vars': [
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
         'error',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
     },
   },
-  { files: ['*.config.js', 'e2e/**/*.js'], languageOptions: { globals: globals.node } },
-]
+  {
+    files: ['*.config.js', 'e2e/**/*.js'],
+    languageOptions: { globals: globals.node },
+  },
+)
